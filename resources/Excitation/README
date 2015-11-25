@@ -1,0 +1,6 @@
+Each file is named after the proton number of the isotope.
+The contents have the following format:
+
+* the first line contains the minimum and maximum A for this Z
+* then, for each mass A, a line with the known excitation enegies follows
+  this line may be empty if no excited states are known
