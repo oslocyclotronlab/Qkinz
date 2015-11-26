@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=0.5.0
+Type=Application
+Terminal=false
+Icon=/usr/share/Qkinz/Qkinz.png
+Exec=Qkinz
+Name=Qkinz
+GenericName=Qkinz
+Comment=Tool to perform kinematic calculations.
+Categories=Utility

@@ -1,0 +1,23 @@
+qkinz (1.1-0ubuntu0) UNRELEASED; urgency=medium
+
+  * Major change to both the backend and the gui.
+
+ -- Vetle Wegner Ingeberg <vetlewi@vetle-Lenovo-U410>  Thu, 26 Nov 2015 14:51:00 +0100
+
+qkinz (1.0-0ubuntu2) utopic; urgency=medium
+
+  * Fixed some bugs that gave wrong energies
+
+ -- Vetle Wegner Ingeberg <v.w.ingeberg@fys.uio.no>  Thu, 12 Mar 2015 20:51:26 +0100
+
+qkinz (1.0-0ubuntu1) utopic; urgency=medium
+
+  * update
+
+ -- Vetle Wegner Ingeberg <v.w.ingeberg@fys.uio.no>  Tue, 10 Mar 2015 20:09:28 +0100
+
+qkinz (1.0-0) utopic; urgency=low
+
+  * Initial release
+
+ -- Vetle Wegner Ingeberg <v.w.ingeberg@fys.uio.no>  Thu, 12 Feb 2015 01:07:14 +0100

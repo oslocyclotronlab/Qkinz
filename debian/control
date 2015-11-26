@@ -1,0 +1,11 @@
+Source: qkinz
+Maintainer: V. W. Ingeberg <vetlewi@fys.uio.no>
+Section: misc
+Priority: optional
+Standards-Version: 3.9.4
+Build-Depends: build-essential, mesa-common-dev, libqt5webkit5-dev, cdbs, qt5-default, debhelper (>=9)
+
+Package: qkinz
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Qkinz is a kinematics program to simulate the kinematics of experiments at the Oslo Cyclotron Laboratory.
