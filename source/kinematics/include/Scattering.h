@@ -37,8 +37,8 @@ public:
     //! Function for calculating maximum excitation energy of particle B.
     /*! \return The highest posible positive excitation energy for particle B.
      */
-    virtual double FindMaxEx(const double &E,       /*!< Energy of incident particle A.     */
-                             const double &theta    /*!< Outgoing angle of the fragment.    */) const=0;
+    //virtual double FindMaxEx(const double &E,       /*!< Energy of incident particle A.     */
+    //                         const double &theta    /*!< Outgoing angle of the fragment.    */) const=0;
 
     // Functions to set particles.
     //! Set particle A.

@@ -6,6 +6,7 @@
 
 #include "Scattering.h"
 #include "DickNorbury.h"
+#include "Iterative.h"
 
 #include "StoppingPower.h"
 #include "Ziegler1985.h"
@@ -94,7 +95,7 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         Material *dEdet = new Material(theTelescope->dEdetector.Z, Get_mm2(theTelescope->dEdetector.Z), theTelescope->dEdetector.width/cos(incAngle), Material::um);
         Material *Edet = new Material(theTelescope->Edetector.Z, Get_mm2(theTelescope->Edetector.Z), theTelescope->Edetector.width/cos(incAngle), Material::um);
 
-        Scattering *scat = new DickNorbury(beam, scatIso, fragment, residual);
+        Scattering *scat = new Iterative(beam, scatIso, fragment, residual);
 
         // Setting up stopping power for the target.
         StoppingPower *stopTargetB;
@@ -272,7 +273,7 @@ bool Worker::Known(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
     Material *dEdet = new Material(theTelescope->dEdetector.Z, Get_mm2(theTelescope->dEdetector.Z), theTelescope->dEdetector.width/cos(incAngle), Material::um);
     Material *Edet = new Material(theTelescope->Edetector.Z, Get_mm2(theTelescope->Edetector.Z), theTelescope->Edetector.width/cos(incAngle), Material::um);
 
-    Scattering *scat = new DickNorbury(beam, scatIso, fragment, residual);
+    Scattering *scat = new Iterative(beam, scatIso, fragment, residual);
 
     // Setting up stopping power for the target.
     StoppingPower *stopTargetB;
