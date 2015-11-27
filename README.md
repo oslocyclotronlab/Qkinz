@@ -9,9 +9,10 @@ To build the package, you need the [**Qt SDK**](http://www.qt.io/). It has only 
 
 Download
 ----
-OS X:
+####OS X:
 The latest version for OS X can be [**downloaded here**](https://github.com/vetlewi/Qkinz/releases)(compatible with OS X 10.9 and later).
-Ubuntu:
+
+####Ubuntu:
 The easiest way to install for ubuntu is to run the following lines in the command-line:
 
 `sudo add-apt-repository ppa:v-w-ingeberg/ppa`
@@ -21,6 +22,9 @@ The easiest way to install for ubuntu is to run the following lines in the comma
 `sudo apt-get install qkinz`
 
 Binaries can also be downloaded from [**here**](https://launchpad.net/~v-w-ingeberg/+archive/ubuntu/ppa/+packages).
+
+####Windows:
+Currently, no binaries are provided but can be build from source.
 
 Licence
 ----
