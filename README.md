@@ -1,11 +1,11 @@
 # Qkinz
-Application for simulating the kinematics in Oslo Cyclotron Laboratory. The application uses stopping powers from J.F. Ziegler, J.P. Biersack, and U. Littmark, *The Stopping and Range of Ions in Solids*, Pergamon Press, New York (1985) for materials $Z\leq92$. Stopping powers are calculated from the Bethe-Block formula when $Z>92$. Masses used in the calculations are taken from the Atomic Mass Evaluation 2012 by M. Wang, G. Audi, A. H. Wapstra, F. G. Kondev,M. MacCormick, X. Xu, and B. Pfeiffer, Chinese Physics **C36**, 1603 (2012) [doi:10.1088/1674-1137/36/12/003](dx.doi.org/10.1088/1674-1137/36/12/003). 
+Application for simulating the kinematics in Oslo Cyclotron Laboratory. The application uses stopping powers from J.F. Ziegler, J.P. Biersack, and U. Littmark, *The Stopping and Range of Ions in Solids*, Pergamon Press, New York (1985) for materials $Z\leq92$. Stopping powers are calculated from the Bethe-Block formula when $Z>92$. Masses used in the calculations are taken from the Atomic Mass Evaluation 2012 by M. Wang, G. Audi, A. H. Wapstra, F. G. Kondev,M. MacCormick, X. Xu, and B. Pfeiffer, Chinese Physics **C36**, 1603 (2012) [doi:10.1088/1674-1137/36/12/003](dx.doi.org/10.1088/1674-1137/36/12/003). Parts of the graphical component of the software is based on [**QCustomPlot**](http://qcustomplot.com/index.php/introduction).
 
 ![Screenshot](https://raw.githubusercontent.com/oslocyclotronlab/Qkinz/master/screenshot/Screenshot.png)
 
 Build
 ----
-The software is based on the [**Qt SDK**](http://www.qt.io/). Currently it has only been built using Qt 5.5 on OS X, but might work with other versions as well. It also requires an compiler supporting C++11. In order to build, run:
+The software is based on the [**Qt SDK**](http://www.qt.io/). Currently it has only been built using Qt 5.5 on OS X, but might also work with other versions of Qt. It also requires an compiler supporting C++11. In order to build, run:
 
 `qmake Qkinz.pro`
 
