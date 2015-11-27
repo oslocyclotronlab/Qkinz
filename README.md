@@ -13,6 +13,7 @@ OS X:
 The latest version for OS X can be [**downloaded here**](https://github.com/vetlewi/Qkinz/releases)(compatible with OS X 10.9 and later).
 Ubuntu:
 The easiest way to install for ubuntu is to run the following lines in the command-line:
+
 `sudo add-apt-repository ppa:v-w-ingeberg/ppa`
 
 `sudo apt-get update`
