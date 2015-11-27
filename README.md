@@ -5,7 +5,11 @@ Application for simulating the kinematics in Oslo Cyclotron Laboratory. The appl
 
 Build
 ----
-To build the package, you need the [**Qt SDK**](http://www.qt.io/). It has only been built using Qt5.5, but may work with other versions as well. To build, navigate to the folder containing the source and run qmake and then make.
+The software is based on the [**Qt SDK**](http://www.qt.io/). Currently it has only been built using Qt 5.5 on OS X, but might work with other versions as well. It also requires an compiler supporting C++11. In order to build, run:
+
+`qmake Qkinz.pro`
+
+`make`
 
 Download
 ----
