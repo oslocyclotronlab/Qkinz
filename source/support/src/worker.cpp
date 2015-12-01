@@ -24,6 +24,7 @@
 const double PI = acos(-1);
 const double ANG_FWD = 47*PI/180.;
 
+
 Worker::Worker(Beam_t *beam, Target_t *target, Telescope_t *telescope)
     : theBeam( beam )
     , theTarget( target )
@@ -136,6 +137,7 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         }
 
         double Ehalf = stopTargetB->Loss(theBeam->E, target->GetWidth(tUnit)/2., INTPOINTS);
+        double Ewhole = stopTargetB->Loss(theBeam->E, INTPOINTS);
 
         double dEx = (Ehalf + get_Q_keV(theBeam->A, theBeam->Z, theTarget->A, theTarget->Z, fA, fZ)/1000.)/double(POINTS - 1);
 
@@ -164,23 +166,33 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
             return false; // Reaction not possible. Not enough energy :(
         }
 
-        QVector<double> Ex_tmp(POINTS), dE_tmp(POINTS), E_tmp(POINTS), is_punch(POINTS);
+        QVector<double> Ex_tmp(POINTS), dE_tmp(POINTS), E_tmp(POINTS), E_err_tmp(POINTS), is_punch(POINTS);
 
         Ex.clear();
         dE.clear();
         E.clear();
 
-
+        double l;
         double m, dm, em;
+        double n;
 
         for (int i = 0 ; i < POINTS ; ++i){
             Ex_tmp[i] = i*dEx;
 
+            l = scat->EvaluateY(theBeam->E, Angle, Ex_tmp[i]);
             m = scat->EvaluateY(Ehalf, Angle, Ex_tmp[i]);
+            n = scat->EvaluateY(Ewhole, Angle, Ex_tmp[i]);
 
+            l = stopTargetF->Loss(l, target->GetWidth(tUnit)/fabs(2*cos(Angle)), INTPOINTS);
             m = stopTargetF->Loss(m, target->GetWidth(tUnit)/fabs(2*cos(Angle)), INTPOINTS);
 
+            l = stopAbsor->Loss(l, INTPOINTS);
             m = stopAbsor->Loss(m, INTPOINTS);
+            n = stopAbsor->Loss(n, INTPOINTS);
+
+            E_err_tmp[i] = sqrt(3*l*l + 3*n*n + 4*m*m - 2*n*l -4*m*(l + n))/4.;
+
+            m = (l + 2*m + n)/4.;
 
             dm = stopDE->Loss(m, INTPOINTS);
 
@@ -192,7 +204,7 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
             if (em != em)
                 is_punch[i] = 1000;
         }
-        QVector<double> is_punch2;
+        QVector<double> is_punch2, E_err;
         int not_punch = 0;
         for (int i = 0 ; i < Ex_tmp.size() ; ++i){
             if (E_tmp[i] >= 0.35){
@@ -200,6 +212,7 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
                 dE.push_back(dE_tmp[i]);
                 E.push_back(E_tmp[i]);
                 is_punch2.push_back(is_punch[i]);
+                E_err.push_back(E_err_tmp[i]);
                 if (is_punch[i] <= 0.05)
                     not_punch += 1;
             }
@@ -208,18 +221,25 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         if (not_punch >= 3){
             double *x = new double[not_punch];
             double *y = new double[not_punch];
+            double *dx = new double[not_punch];
             int j = 0;
             for (int i = 0 ; i < is_punch2.size() ; ++i){
                 if (is_punch2[i] <= 0.05 && j < not_punch){
                     x[j] = dE[i] + E[i];
                     y[j] = Ex[i];
+                    dx[j] = E_err[i];
                     ++j;
                 }
             }
             Polyfit fitting(x, y, not_punch);
             Vector fit = fitting(3);
-            coeff = QVector<double>(3);
-            coeff[0] = fit[0]; coeff[1] = fit[1]; coeff[2] = fit[2];
+            coeff = QVector<double>(4);
+            coeff[0] = fit[0]; coeff[1] = fit[1]; coeff[2] = fit[2], coeff[3] = 0;
+
+            for (int i = 0 ; i < not_punch ; ++i){
+                coeff[3] += (y[i] - coeff[0] - coeff[1]*x[i] - coeff[2]*x[i]*x[i])*(y[i] - coeff[0] - coeff[1]*x[i] - coeff[2]*x[i]*x[i])/(dx[i]*dx[i]);
+            }
+            coeff[3] /= double(not_punch - 3);
 
             delete[] x;
             delete[] y;

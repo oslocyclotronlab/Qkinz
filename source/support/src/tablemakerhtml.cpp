@@ -1,5 +1,7 @@
 #include "tablemakerhtml.h"
 
+#include <cmath>
+
 TableMakerHTML::TableMakerHTML()
 {
 
@@ -82,6 +84,7 @@ QString TableMakerHTML::makeTable(Result_t data)
     output += "<td><b>Excitation energy (keV):</b></td>\n";
     output += "<td>Energy dE-detector (keV):</td>\n";
     output += "<td>Energy E-detector (keV):</td>\n";
+    output += "<td>Total particle energy (keV):</td>\n";
     output += "</tr>\n";
     for (int i = 0 ; i < data.Ex.size() ; ++i){
         output += "<tr>\n";
@@ -98,6 +101,11 @@ QString TableMakerHTML::makeTable(Result_t data)
         output += " ± ";
         output += std::to_string(data.d_E[i]*1000).c_str();
         output += "</td>\n";
+        output += "<td>";
+        output += std::to_string((data.dE[i]+data.E[i])*1000).c_str();
+        output += " ± ";
+        output += std::to_string(sqrt(data.d_dE[i]*data.d_dE[i] + data.d_E[i]*data.d_E[i])*1000).c_str();
+        output += "</td>\n";
         output += "</tr>\n";
     }
     output += "</table>\n";
@@ -108,12 +116,14 @@ QString TableMakerHTML::makeCoeff(QVector<double> coeff)
 {
     QString output = "";
     output += "<b>Ex(e+de) = a0 + a1(e+de) + a2(e+de)^2</b>\n";
-    output += "<p>a0 = ";
-    output += std::to_string(coeff[0]*1000).c_str();
-    output += " keV, a1 = ";
-    output += std::to_string(coeff[1]*1000).c_str();
+    output += "<p>chi-squared: ";
+    output += std::to_string(coeff[3]).c_str();
+    output += ", a0 = ";
+    output += std::to_string(coeff[0]).c_str();
+    output += " MeV, a1 = ";
+    output += std::to_string(coeff[1]).c_str();
     output += ", a2 = ";
-    output += std::to_string(coeff[2]*1000).c_str();
-    output += " keV^-1</p>\n";
+    output += std::to_string(coeff[2]).c_str();
+    output += " MeV^-1</p>\n";
     return output;
 }
