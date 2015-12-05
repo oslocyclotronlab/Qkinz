@@ -12,17 +12,28 @@
 
 const double PI = acos(-1);
 
+static QString Unit2String(const Unit_t &unit)
+{
+    if (unit == mgcm2)
+        return "mg/cm^2";
+    else if (unit == gcm2)
+        return "g/cm2";
+    else
+        return "um";
+}
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , setBeam_form(new SelectBeamForm(this))
     , setTarget_form(new SelectTargetForm(this))
+    , setFrontBack_form(new SelectFrontBackForm(this))
     , setTelescope_form(new SelectTelescopeForm(this))
     , runDialog(new RunDialog(this))
 {
     ui->setupUi(this);
 
-    worker = new Worker(&theBeam, &theTarget, &theTelescope);
+    worker = new Worker(&theBeam, &theTarget, &theFront, &theBack, &theTelescope);
     worker->moveToThread(&workThread);
     qRegisterMetaType<QVector<double> >("QVector<double>");
     qRegisterMetaType<Fragment_t>("Fragment_t");
@@ -56,6 +67,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->ChangeBeamButton, SIGNAL(clicked()), this, SLOT(showBeam()));
     connect(ui->ChangeTargetButton, SIGNAL(clicked()), this, SLOT(showTarget()));
+    connect(ui->ChangeFBButton, SIGNAL(clicked()), this, SLOT(showFB()));
     connect(ui->ChangeTelescopeButton, SIGNAL(clicked()), this, SLOT(showTelescope()));
 
     connect(ui->RunButton, SIGNAL(clicked()), this, SLOT(run()));
@@ -63,6 +75,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(setBeam_form, SIGNAL(DoRefresh()), this, SLOT(Refresh()));
     connect(setTarget_form, SIGNAL(DoRefresh()), this, SLOT(Refresh()));
+    connect(setFrontBack_form, SIGNAL(DoRefresh()), this, SLOT(Refresh()));
     connect(setTelescope_form, SIGNAL(DoRefresh()), this, SLOT(Refresh()));
 
     connect(ui->actionClose, SIGNAL(triggered(bool)), this, SLOT(close()));
@@ -75,13 +88,30 @@ MainWindow::MainWindow(QWidget *parent)
     theTarget.A = 28;
     theTarget.Z = 14;
     theTarget.width = 4.0;
+    theTarget.unit = mgcm2;
+
+    theFront.is_present = false;
+    theFront.A = 27;
+    theFront.Z = 13;
+    theFront.width = 0.5;
+    theFront.unit = mgcm2;
+
+    theBack.is_present = false;
+    theBack.A = 27;
+    theBack.Z = 13;
+    theBack.width = 0.5;
+    theBack.unit = mgcm2;
 
     theTelescope.dEdetector.Z = 14;
     theTelescope.dEdetector.width = 130.0;
+    theTelescope.dEdetector.unit = um;
     theTelescope.Edetector.Z = 14;
     theTelescope.Edetector.width = 1550.0;
+    theTelescope.Edetector.unit = um;
+    theTelescope.has_absorber = true;
     theTelescope.Absorber.Z = 13;
     theTelescope.Absorber.width = 10.5;
+    theTelescope.Absorber.unit = um;
 
     Refresh();
 }
@@ -95,13 +125,30 @@ void MainWindow::Reset_All()
     theTarget.A = 28;
     theTarget.Z = 14;
     theTarget.width = 4.0;
+    theTarget.unit = mgcm2;
+
+    theFront.is_present = false;
+    theFront.A = 27;
+    theFront.Z = 13;
+    theFront.width = 0.5;
+    theFront.unit = mgcm2;
+
+    theBack.is_present = false;
+    theBack.A = 27;
+    theBack.Z = 13;
+    theBack.width = 0.5;
+    theBack.unit = mgcm2;
 
     theTelescope.dEdetector.Z = 14;
     theTelescope.dEdetector.width = 130.0;
+    theTelescope.dEdetector.unit = um;
     theTelescope.Edetector.Z = 14;
     theTelescope.Edetector.width = 1550.0;
+    theTelescope.Edetector.unit = um;
+    theTelescope.has_absorber = true;
     theTelescope.Absorber.Z = 13;
     theTelescope.Absorber.width = 10.5;
+    theTelescope.Absorber.unit = um;
 
     RemoveAllGraphs();
     Refresh();
@@ -144,13 +191,40 @@ void MainWindow::Refresh()
     std::string tWidth = std::to_string(theTarget.width);
     ui->CurrentTarget->setText(tName.c_str());
     ui->CurrentThickness->setText(tWidth.c_str());
+    ui->TargetUnitLabel->setText(Unit2String(theTarget.unit));
+
+
+    if (theFront.is_present){
+        ui->CurrentFront->setText(std::string(std::to_string(theFront.A) + std::string(get_element_name(theFront.Z))).c_str());
+        ui->FrontWidth->setText(std::to_string(theFront.width).c_str());
+        ui->FrontUnitLabel->setText(Unit2String(theFront.unit));
+    } else {
+        ui->CurrentFront->setText("-");
+        ui->FrontWidth->setText("-");
+    }
+    if (theBack.is_present){
+        ui->CurrentBack->setText(std::string(std::to_string(theBack.A) + std::string(get_element_name(theBack.Z))).c_str());
+        ui->BackWidth->setText(std::to_string(theBack.width).c_str());
+        ui->BackUnitLabel->setText(Unit2String(theBack.unit));
+    } else {
+        ui->CurrentBack->setText("-");
+        ui->BackWidth->setText("-");
+    }
 
     ui->dEMatSym->setText(get_element_name(theTelescope.dEdetector.Z));
     ui->CurrentDE->setText(std::to_string(theTelescope.dEdetector.width).c_str());
+    ui->dEdetUnitLabel->setText(Unit2String(theTelescope.dEdetector.unit));
     ui->EMatSym->setText(get_element_name(theTelescope.Edetector.Z));
     ui->CurrentE->setText(std::to_string(theTelescope.Edetector.width).c_str());
-    ui->AMatSym->setText(get_element_name(theTelescope.Absorber.Z));
-    ui->CurrentA->setText(std::to_string(theTelescope.Absorber.width).c_str());
+    ui->EdetUnitLabel->setText(Unit2String(theTelescope.Edetector.unit));
+    if (theTelescope.has_absorber){
+        ui->AMatSym->setText(get_element_name(theTelescope.Absorber.Z));
+        ui->CurrentA->setText(std::to_string(theTelescope.Absorber.width).c_str());
+        ui->AbsUnitLabel->setText(Unit2String(theTelescope.Absorber.unit));
+    } else {
+        ui->AMatSym->setText("-");
+        ui->CurrentA->setText("-");
+    }
 
 }
 

@@ -14,9 +14,11 @@ class Worker : public QObject
 public:
 
     //! Constructor.
-    Worker(Beam_t *beam,            /*!< Current beam settings.         */
-           Target_t *target,        /*!< Current target settings.       */
-           Telescope_t *telescope   /*!< Current telescope settings.    */);
+    Worker(Beam_t *beam,            /*!< Current beam settings.             */
+           Target_t *target,        /*!< Current target settings.           */
+           Extra_t *front,          /*!< Current target fronting settings.  */
+           Extra_t *back,           /*!< Current target backing settings.   */
+           Telescope_t *telescope   /*!< Current telescope settings.        */);
 
 public slots:
 
@@ -53,6 +55,12 @@ private:
 
     //! The current target.
     Target_t *theTarget;
+
+    //! Fronting of the target.
+    Extra_t *theFront;
+
+    //! Backing of the target.
+    Extra_t *theBack;
 
     //! The current telescope.
     Telescope_t *theTelescope;

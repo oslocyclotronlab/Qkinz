@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>279</width>
-    <height>279</height>
+    <width>376</width>
+    <height>314</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,7 +42,7 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>dE telescope width (um):</string>
+          <string>dE telescope width:</string>
          </property>
         </widget>
        </item>
@@ -51,6 +51,25 @@
          <property name="maximum">
           <double>5000.000000000000000</double>
          </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="dEUnit">
+         <item>
+          <property name="text">
+           <string>um</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>g/cm^2</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>mg/cm^2</string>
+          </property>
+         </item>
         </widget>
        </item>
       </layout>
@@ -81,7 +100,7 @@
        <item>
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>E telescope width (um):</string>
+          <string>E telescope width:</string>
          </property>
         </widget>
        </item>
@@ -92,7 +111,36 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QComboBox" name="EUnit">
+         <item>
+          <property name="text">
+           <string>um</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>g/cm^2</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>mg/cm^2</string>
+          </property>
+         </item>
+        </widget>
+       </item>
       </layout>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="absPres">
+       <property name="text">
+        <string>Absorber present</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -129,6 +177,25 @@
          <property name="maximum">
           <double>5000.000000000000000</double>
          </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="AbsUnit">
+         <item>
+          <property name="text">
+           <string>um</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>g/cm^2</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>mg/cm^2</string>
+          </property>
+         </item>
         </widget>
        </item>
       </layout>
