@@ -17,6 +17,7 @@ macx {
     LIBS += -dead_strip  #-stdlib=libc++
     ICON = resources/media/Qkinz.icns
 }
+QMAKE_CXXFLAGS += -std=c++11
 
 
 INCLUDEPATH +=  source \
