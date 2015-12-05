@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1489</width>
-    <height>867</height>
+    <height>998</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,9 +42,6 @@
          </size>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
-         <property name="sizeConstraint">
-          <enum>QLayout::SetMaximumSize</enum>
-         </property>
          <item>
           <layout class="QHBoxLayout" name="Layout_beamInfo">
            <item>
@@ -111,7 +108,7 @@
            <item>
             <widget class="QLabel" name="ThicknessLabel">
              <property name="text">
-              <string>Target thickness (mg/cm2):</string>
+              <string>Target thickness:</string>
              </property>
             </widget>
            </item>
@@ -119,6 +116,19 @@
             <widget class="QLabel" name="CurrentThickness">
              <property name="text">
               <string>2.50</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="TargetUnitLabel">
+             <property name="text">
+              <string>mg/cm2</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
             </widget>
            </item>
@@ -128,6 +138,129 @@
           <widget class="QPushButton" name="ChangeTargetButton">
            <property name="text">
             <string>Change target</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QLabel" name="FrontLabel">
+             <property name="text">
+              <string>Target front:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="CurrentFront">
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="text">
+              <string>-</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <widget class="QLabel" name="FrontWidthLabel">
+             <property name="text">
+              <string>Front width:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="FrontWidth">
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="text">
+              <string>-</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="FrontUnitLabel">
+             <property name="text">
+              <string>mg/cm2</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <item>
+            <widget class="QLabel" name="BackLabel">
+             <property name="text">
+              <string>Target back:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="CurrentBack">
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="text">
+              <string>-</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <widget class="QLabel" name="BackWidthLabel">
+             <property name="text">
+              <string>Back width:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="BackWidth">
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="text">
+              <string>-</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="BackUnitLabel">
+             <property name="text">
+              <string>mg/cm2</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QPushButton" name="ChangeFBButton">
+           <property name="text">
+            <string>Change front/back</string>
            </property>
           </widget>
          </item>
@@ -154,7 +287,7 @@
            <item>
             <widget class="QLabel" name="dEdetLabel">
              <property name="text">
-              <string>dE detector width(um):</string>
+              <string>dE detector width:</string>
              </property>
             </widget>
            </item>
@@ -162,6 +295,19 @@
             <widget class="QLabel" name="CurrentDE">
              <property name="text">
               <string>150</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="dEdetUnitLabel">
+             <property name="text">
+              <string>um</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
             </widget>
            </item>
@@ -190,7 +336,7 @@
            <item>
             <widget class="QLabel" name="EdetLabel">
              <property name="text">
-              <string>E detector width(um):</string>
+              <string>E detector width:</string>
              </property>
             </widget>
            </item>
@@ -198,6 +344,19 @@
             <widget class="QLabel" name="CurrentE">
              <property name="text">
               <string>1550</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="EdetUnitLabel">
+             <property name="text">
+              <string>um</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
             </widget>
            </item>
@@ -226,7 +385,7 @@
            <item>
             <widget class="QLabel" name="AbsWLabel">
              <property name="text">
-              <string>Absorber width(um):</string>
+              <string>Absorber width:</string>
              </property>
             </widget>
            </item>
@@ -234,6 +393,19 @@
             <widget class="QLabel" name="CurrentA">
              <property name="text">
               <string>10.5</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="AbsUnitLabel">
+             <property name="text">
+              <string>um</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
             </widget>
            </item>
@@ -392,7 +564,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QLabel" name="label_2">
+          <widget class="QLabel" name="OCLlogo">
            <property name="text">
             <string/>
            </property>
@@ -405,6 +577,22 @@
           </widget>
          </item>
         </layout>
+        <zorder>ChangeBeamButton</zorder>
+        <zorder>ChangeTargetButton</zorder>
+        <zorder>ChangeTelescopeButton</zorder>
+        <zorder>OCLlogo</zorder>
+        <zorder>AbsWLabel</zorder>
+        <zorder>FrontLabel</zorder>
+        <zorder>FrontWidthLabel</zorder>
+        <zorder>BackLabel</zorder>
+        <zorder>BackWidthLabel</zorder>
+        <zorder>CurrentFront</zorder>
+        <zorder>FrontWidth</zorder>
+        <zorder>CurrentBack</zorder>
+        <zorder>BackWidth</zorder>
+        <zorder>BackUnitLabel</zorder>
+        <zorder>FrontUnitLabel</zorder>
+        <zorder>ChangeFBButton</zorder>
        </widget>
       </item>
       <item>
@@ -422,6 +610,9 @@
          <attribute name="title">
           <string>Plot</string>
          </attribute>
+         <zorder>SettingsWidget</zorder>
+         <zorder>SettingsWidget</zorder>
+         <zorder>SettingsWidget</zorder>
         </widget>
         <widget class="QWidget" name="tableTab">
          <attribute name="title">

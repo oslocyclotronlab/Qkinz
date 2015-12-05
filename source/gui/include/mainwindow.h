@@ -9,6 +9,7 @@
 #include "selectbeamform.h"
 #include "selecttargetform.h"
 #include "selecttelescopeform.h"
+#include "selectfrontbackform.h"
 #include "rundialog.h"
 
 #include "types.h"
@@ -72,6 +73,14 @@ private slots:
         setTarget_form->show();
     }
 
+    //! Slot for showing the change front/back dialog.
+    inline void showFB()
+    {
+        setFrontBack_form->setExtra(&theFront, &theBack);
+        setFrontBack_form->Refresh();
+        setFrontBack_form->show();
+    }
+
     //! Slot for showing the change telescope dialog.
     inline void showTelescope()
     {
@@ -129,6 +138,9 @@ private:
     //! Select Target Form instance.
     SelectTargetForm *setTarget_form;
 
+    //! Select optional fronting - backing of the target.
+    SelectFrontBackForm *setFrontBack_form;
+
     //! Select Telescope Form instance.
     SelectTelescopeForm *setTelescope_form;
 
@@ -143,6 +155,12 @@ private:
 
     //! Structure containing information about the target.
     Target_t theTarget;
+
+    //! Structure containing element in front of the target.
+    Extra_t theFront;
+
+    //! Structure containing element behind the target.
+    Extra_t theBack;
 
     //! Structure containing information about the telescope.
     Telescope_t theTelescope;
