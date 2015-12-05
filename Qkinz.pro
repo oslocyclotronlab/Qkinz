@@ -11,12 +11,22 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport webkitwidgets
 TARGET = Qkinz
 TEMPLATE = app
 
+unix {
+    BUILDDIR = $$PWD/build
+    DESTDIR = $$BUILDDIR
+    OBJECTS_DIR = $$BUILDDIR
+    MOC_DIR = $$BUILDDIR
+    RCC_DIR = $$BUILDDIR
+    UI_DIR = $$BUILDDIR
+}
+
 macx {
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.9
     QMAKE_CXXFLAGS += -std=c++11 #-O3
     LIBS += -dead_strip  #-stdlib=libc++
     ICON = resources/media/Qkinz.icns
 }
+QMAKE_CXXFLAGS += -std=c++11
 
 
 INCLUDEPATH +=  source \
@@ -105,3 +115,22 @@ FORMS    += source/gui/forms/mainwindow.ui \
             source/gui/forms/selectfrontbackform.ui
 
 RESOURCES += resources/resorces.qrc
+
+unix {
+    binfile.files += $$BUILDDIR/$$TARGET
+    binfile.path += /usr/bin/
+    icon.files += $$PWD/Qkinz.png
+    icon.path += /usr/share/$$TARGET
+    desktop.path = /usr/share/applications/
+    desktop.files = $$PWD/Qkinz.desktop
+    INSTALLS += binfile
+    INSTALLS += icon
+    INSTALLS += desktop
+}
+
+QMAKE_CLEAN +=  $$BUILDDIR/*.o \
+                $$BUILDDIR/moc_* \
+                $$BUILDDIR/ui_*
+
+QMAKE_DISTCLEAN +=  $$PWD/Makefile \
+                    $$PWD/*.pro.*
