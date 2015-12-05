@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    worker = new Worker(&theBeam, &theTarget, &theTelescope);
+    worker = new Worker(&theBeam, &theTarget, &theFront, &theBack, &theTelescope);
     worker->moveToThread(&workThread);
     qRegisterMetaType<QVector<double> >("QVector<double>");
     qRegisterMetaType<Fragment_t>("Fragment_t");
@@ -201,7 +201,6 @@ void MainWindow::Refresh()
     } else {
         ui->CurrentFront->setText("-");
         ui->FrontWidth->setText("-");
-        ui->FrontUnitLabel->setText("-");
     }
     if (theBack.is_present){
         ui->CurrentBack->setText(std::string(std::to_string(theBack.A) + std::string(get_element_name(theBack.Z))).c_str());
@@ -210,7 +209,6 @@ void MainWindow::Refresh()
     } else {
         ui->CurrentBack->setText("-");
         ui->BackWidth->setText("-");
-        ui->BackUnitLabel->setText("-");
     }
 
     ui->dEMatSym->setText(get_element_name(theTelescope.dEdetector.Z));
@@ -226,7 +224,6 @@ void MainWindow::Refresh()
     } else {
         ui->AMatSym->setText("-");
         ui->CurrentA->setText("-");
-        ui->AbsUnitLabel->setText("-");
     }
 
 }

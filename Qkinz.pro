@@ -59,7 +59,7 @@ SOURCES +=  source/main.cpp \
             source/tables/src/ame2012_mass_tables.cpp \
             source/tables/src/ame2012_masses.cpp \
             source/tables/src/ziegler1985_table.cpp \
-            source/tables/src/excitation.cpp \
+            source/tables/src/excitation.cpp
             
 
 HEADERS  += source/gui/include/mainwindow.h \
@@ -95,9 +95,7 @@ HEADERS  += source/gui/include/mainwindow.h \
             source/tables/include/ziegler1985_table.h \
             source/tables/include/excitation.h \
             source/global.h \
-            source/types.h \  
-    selectfrontbackform.h
-            
+            source/types.h
 
 FORMS    += source/gui/forms/mainwindow.ui \
             source/gui/forms/selectbeamform.ui \

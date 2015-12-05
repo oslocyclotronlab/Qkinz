@@ -24,10 +24,23 @@
 const double PI = acos(-1);
 const double ANG_FWD = 47*PI/180.;
 
+static Material::Unit Unit2MatUnit(const Unit_t &unit)
+{
+    if (unit == mgcm2)
+        return Material::mgcm2;
+    else if (unit == gcm2)
+        return Material::gcm2;
+    else if (unit == um)
+        return Material::um;
+    else
+        return Material::um;
+}
 
-Worker::Worker(Beam_t *beam, Target_t *target, Telescope_t *telescope)
+Worker::Worker(Beam_t *beam, Target_t *target, Extra_t *front, Extra_t *back, Telescope_t *telescope)
     : theBeam( beam )
     , theTarget( target )
+    , theFront( front )
+    , theBack( back )
     , theTelescope( telescope )
 {
 }
@@ -91,10 +104,12 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         Particle *fragment = new Particle(fZ, fA);
         Particle *residual = new Particle(theBeam->Z+theTarget->Z-fZ, theBeam->A+theTarget->A-fA);
 
-        Material *target = new Material(theTarget->Z, theTarget->A, theTarget->width, Material::mgcm2);
-        Material *abs = new Material(theTelescope->Absorber.Z, Get_mm2(theTelescope->Absorber.Z), theTelescope->Absorber.width/cos(incAngle), Material::um);
-        Material *dEdet = new Material(theTelescope->dEdetector.Z, Get_mm2(theTelescope->dEdetector.Z), theTelescope->dEdetector.width/cos(incAngle), Material::um);
-        Material *Edet = new Material(theTelescope->Edetector.Z, Get_mm2(theTelescope->Edetector.Z), theTelescope->Edetector.width/cos(incAngle), Material::um);
+        Material *front = new Material(theFront->Z, theFront->A, theFront->width, Unit2MatUnit(theFront->unit));
+        Material *target = new Material(theTarget->Z, theTarget->A, theTarget->width, Unit2MatUnit(theTarget->unit));
+        Material *back = new Material(theBack->Z, theBack->A, theBack->width/fabs(cos(Angle)), Unit2MatUnit(theBack->unit));
+        Material *abs = new Material(theTelescope->Absorber.Z, Get_mm2(theTelescope->Absorber.Z), theTelescope->Absorber.width/cos(incAngle), Unit2MatUnit(theTelescope->Absorber.unit));
+        Material *dEdet = new Material(theTelescope->dEdetector.Z, Get_mm2(theTelescope->dEdetector.Z), theTelescope->dEdetector.width/cos(incAngle), Unit2MatUnit(theTelescope->dEdetector.unit));
+        Material *Edet = new Material(theTelescope->Edetector.Z, Get_mm2(theTelescope->Edetector.Z), theTelescope->Edetector.width/cos(incAngle), Unit2MatUnit(theTelescope->Edetector.unit));
 
         Scattering *scat = new Iterative(beam, scatIso, fragment, residual);
 
@@ -110,6 +125,29 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
             stopTargetB = new Ziegler1985(target, beam);
             stopTargetF = new Ziegler1985(target, fragment);
             tUnit = Material::um;
+        }
+
+        // Setting up stopping power for the fronting and backing.
+        StoppingPower *stopFrontB;
+        StoppingPower *stopFrontF;
+        Material::Unit fUnit;
+        if (theFront->Z > 92){
+            stopFrontB = new BetheBlock(front, beam);
+            stopFrontF = new BetheBlock(front, fragment);
+            fUnit = Material::gcm2;
+        } else {
+            stopFrontB = new Ziegler1985(front, beam);
+            stopFrontF = new Ziegler1985(front, fragment);
+            fUnit = Material::um;
+        }
+        StoppingPower *stopBack;
+        Material::Unit bUnit;
+        if (theBack->Z > 92){
+            stopBack = new BetheBlock(back, fragment);
+            bUnit = Material::gcm2;
+        } else {
+            stopBack = new Ziegler1985(back, fragment);
+            bUnit = Material::um;
         }
 
         // Setting up stopping power for the absorber.
@@ -135,9 +173,12 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         } else {
             stopE = new Ziegler1985(Edet, fragment);
         }
+        double E_beam = theBeam->E;
+        if (theFront->is_present)
+            E_beam = stopFrontB->Loss(E_beam, INTPOINTS);
 
-        double Ehalf = stopTargetB->Loss(theBeam->E, target->GetWidth(tUnit)/2., INTPOINTS);
-        double Ewhole = stopTargetB->Loss(theBeam->E, INTPOINTS);
+        double Ehalf = stopTargetB->Loss(E_beam, target->GetWidth(tUnit)/2., INTPOINTS);
+        double Ewhole = stopTargetB->Loss(E_beam, INTPOINTS);
 
         double dEx = (Ehalf + get_Q_keV(theBeam->A, theBeam->Z, theTarget->A, theTarget->Z, fA, fZ)/1000.)/double(POINTS - 1);
 
@@ -150,6 +191,8 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
             
             // Materials.
             delete target;
+            delete front;
+            delete back;
             delete abs;
             delete dEdet;
             delete Edet;
@@ -160,6 +203,9 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
             // Stopping power calculators.
             delete stopTargetB;
             delete stopTargetF;
+            delete stopFrontB;
+            delete stopFrontF;
+            delete stopBack;
             delete stopAbsor;
             delete stopDE;
             delete stopE;
@@ -179,16 +225,33 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         for (int i = 0 ; i < POINTS ; ++i){
             Ex_tmp[i] = i*dEx;
 
-            l = scat->EvaluateY(theBeam->E, Angle, Ex_tmp[i]);
+            l = scat->EvaluateY(E_beam, Angle, Ex_tmp[i]);
             m = scat->EvaluateY(Ehalf, Angle, Ex_tmp[i]);
             n = scat->EvaluateY(Ewhole, Angle, Ex_tmp[i]);
 
-            l = stopTargetF->Loss(l, target->GetWidth(tUnit)/fabs(2*cos(Angle)), INTPOINTS);
+            if (Angle > PI/2.){
+                n = stopTargetF->Loss(n, target->GetWidth(tUnit)/fabs(cos(Angle)), INTPOINTS);
+            } else {
+                l = stopTargetF->Loss(l, target->GetWidth(tUnit)/fabs(cos(Angle)), INTPOINTS);
+            }
+
             m = stopTargetF->Loss(m, target->GetWidth(tUnit)/fabs(2*cos(Angle)), INTPOINTS);
 
-            l = stopAbsor->Loss(l, INTPOINTS);
-            m = stopAbsor->Loss(m, INTPOINTS);
-            n = stopAbsor->Loss(n, INTPOINTS);
+            if (Angle > PI/2. && theFront->is_present){
+                l = stopFrontF->Loss(l, front->GetWidth(fUnit)/fabs(cos(Angle)), INTPOINTS);
+                m = stopFrontF->Loss(m, front->GetWidth(fUnit)/fabs(cos(Angle)), INTPOINTS);
+                n = stopFrontF->Loss(n, front->GetWidth(fUnit)/fabs(cos(Angle)), INTPOINTS);
+            } else if (theBack->is_present){
+                l = stopBack->Loss(l, INTPOINTS);
+                m = stopBack->Loss(m, INTPOINTS);
+                n = stopBack->Loss(n, INTPOINTS);
+            }
+
+            if (theTelescope->has_absorber){
+                l = stopAbsor->Loss(l, INTPOINTS);
+                m = stopAbsor->Loss(m, INTPOINTS);
+                n = stopAbsor->Loss(n, INTPOINTS);
+            }
 
             E_err_tmp[i] = sqrt(3*l*l + 3*n*n + 4*m*m - 2*n*l -4*m*(l + n))/4.;
 
@@ -256,6 +319,8 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
 
         // Materials.
         delete target;
+        delete front;
+        delete back;
         delete abs;
         delete dEdet;
         delete Edet;
@@ -266,6 +331,9 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         // Stopping power calculators.
         delete stopTargetB;
         delete stopTargetF;
+        delete stopFrontB;
+        delete stopFrontF;
+        delete stopBack;
         delete stopAbsor;
         delete stopDE;
         delete stopE;
@@ -288,10 +356,12 @@ bool Worker::Known(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
     Particle *fragment = new Particle(fZ, fA);
     Particle *residual = new Particle(theBeam->Z+theTarget->Z-fZ, theBeam->A+theTarget->A-fA);
 
-    Material *target = new Material(theTarget->Z, theTarget->A, theTarget->width, Material::mgcm2);
-    Material *abs = new Material(theTelescope->Absorber.Z, Get_mm2(theTelescope->Absorber.Z), theTelescope->Absorber.width/cos(incAngle), Material::um);
-    Material *dEdet = new Material(theTelescope->dEdetector.Z, Get_mm2(theTelescope->dEdetector.Z), theTelescope->dEdetector.width/cos(incAngle), Material::um);
-    Material *Edet = new Material(theTelescope->Edetector.Z, Get_mm2(theTelescope->Edetector.Z), theTelescope->Edetector.width/cos(incAngle), Material::um);
+    Material *front = new Material(theFront->Z, theFront->A, theFront->width, Unit2MatUnit(theFront->unit));
+    Material *target = new Material(theTarget->Z, theTarget->A, theTarget->width, Unit2MatUnit(theTarget->unit));
+    Material *back = new Material(theBack->Z, theBack->A, theBack->width/fabs(cos(Angle)), Unit2MatUnit(theBack->unit));
+    Material *abs = new Material(theTelescope->Absorber.Z, Get_mm2(theTelescope->Absorber.Z), theTelescope->Absorber.width/cos(incAngle), Unit2MatUnit(theTelescope->Absorber.unit));
+    Material *dEdet = new Material(theTelescope->dEdetector.Z, Get_mm2(theTelescope->dEdetector.Z), theTelescope->dEdetector.width/cos(incAngle), Unit2MatUnit(theTelescope->dEdetector.unit));
+    Material *Edet = new Material(theTelescope->Edetector.Z, Get_mm2(theTelescope->Edetector.Z), theTelescope->Edetector.width/cos(incAngle), Unit2MatUnit(theTelescope->Edetector.unit));
 
     Scattering *scat = new Iterative(beam, scatIso, fragment, residual);
 
@@ -307,6 +377,29 @@ bool Worker::Known(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         stopTargetB = new Ziegler1985(target, beam);
         stopTargetF = new Ziegler1985(target, fragment);
         tUnit = Material::um;
+    }
+
+    // Setting up stopping power for the fronting and backing.
+    StoppingPower *stopFrontB;
+    StoppingPower *stopFrontF;
+    Material::Unit fUnit;
+    if (theFront->Z > 92){
+        stopFrontB = new BetheBlock(front, beam);
+        stopFrontF = new BetheBlock(front, fragment);
+        fUnit = Material::gcm2;
+    } else {
+        stopFrontB = new Ziegler1985(front, beam);
+        stopFrontF = new Ziegler1985(front, fragment);
+        fUnit = Material::um;
+    }
+    StoppingPower *stopBack;
+    Material::Unit bUnit;
+    if (theBack->Z > 92){
+        stopBack = new BetheBlock(back, fragment);
+        bUnit = Material::gcm2;
+    } else {
+        stopBack = new Ziegler1985(back, fragment);
+        bUnit = Material::um;
     }
 
     // Setting up stopping power for the absorber.
@@ -333,8 +426,12 @@ bool Worker::Known(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         stopE = new Ziegler1985(Edet, fragment);
     }
 
-    double Ehalf = stopTargetB->Loss(theBeam->E, target->GetWidth(tUnit)/2., INTPOINTS);
-    double Ewhole = stopTargetB->Loss(theBeam->E, INTPOINTS);
+    double E_beam = theBeam->E;
+    if (theFront->is_present)
+        E_beam = stopFrontB->Loss(E_beam, INTPOINTS);
+
+    double Ehalf = stopTargetB->Loss(E_beam, target->GetWidth(tUnit)/2., INTPOINTS);
+    double Ewhole = stopTargetB->Loss(E_beam, INTPOINTS);
 
     double Exmax = Ehalf + get_Q_keV(theBeam->A, theBeam->Z, theTarget->A, theTarget->Z, fA, fZ)/1000.;
 
@@ -347,6 +444,8 @@ bool Worker::Known(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         
         // Materials.
         delete target;
+        delete front;
+        delete back;
         delete abs;
         delete dEdet;
         delete Edet;
@@ -357,6 +456,9 @@ bool Worker::Known(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         // Stopping power calculators.
         delete stopTargetB;
         delete stopTargetF;
+        delete stopFrontB;
+        delete stopFrontF;
+        delete stopBack;
         delete stopAbsor;
         delete stopDE;
         delete stopE;
@@ -376,6 +478,8 @@ bool Worker::Known(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         
         // Materials.
         delete target;
+        delete front;
+        delete back;
         delete abs;
         delete dEdet;
         delete Edet;
@@ -386,6 +490,9 @@ bool Worker::Known(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         // Stopping power calculators.
         delete stopTargetB;
         delete stopTargetF;
+        delete stopFrontB;
+        delete stopFrontF;
+        delete stopBack;
         delete stopAbsor;
         delete stopDE;
         delete stopE;
@@ -408,16 +515,21 @@ bool Worker::Known(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         
         // Materials.
         delete target;
+        delete front;
+        delete back;
         delete abs;
         delete dEdet;
         delete Edet;
-        
+
         // Scattering calculator.
         delete scat;
-        
+
         // Stopping power calculators.
         delete stopTargetB;
         delete stopTargetF;
+        delete stopFrontB;
+        delete stopFrontF;
+        delete stopBack;
         delete stopAbsor;
         delete stopDE;
         delete stopE;
@@ -437,16 +549,33 @@ bool Worker::Known(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
 
     for (int i = 0 ; i < Ex_tmp.size() ; ++i){
 
-        f = scat->EvaluateY(theBeam->E, Angle, Ex_tmp[i]);
+        f = scat->EvaluateY(E_beam, Angle, Ex_tmp[i]);
         m = scat->EvaluateY(Ehalf, Angle, Ex_tmp[i]);
         b = scat->EvaluateY(Ewhole, Angle, Ex_tmp[i]);
 
-        f = stopTargetF->Loss(f, target->GetWidth(tUnit)/fabs(cos(Angle)), INTPOINTS);
+        if (Angle > PI/2.){
+            b = stopTargetF->Loss(b, target->GetWidth(tUnit)/fabs(cos(Angle)), INTPOINTS);
+        } else {
+            f = stopTargetF->Loss(f, target->GetWidth(tUnit)/fabs(cos(Angle)), INTPOINTS);
+        }
+
         m = stopTargetF->Loss(m, target->GetWidth(tUnit)/fabs(2*cos(Angle)), INTPOINTS);
 
-        f = stopAbsor->Loss(f, INTPOINTS);
-        m = stopAbsor->Loss(m, INTPOINTS);
-        b = stopAbsor->Loss(b, INTPOINTS);
+        if (Angle > PI/2. && theFront->is_present){
+            f = stopFrontF->Loss(f, front->GetWidth(fUnit)/fabs(cos(Angle)), INTPOINTS);
+            m = stopFrontF->Loss(m, front->GetWidth(fUnit)/fabs(cos(Angle)), INTPOINTS);
+            b = stopFrontF->Loss(b, front->GetWidth(fUnit)/fabs(cos(Angle)), INTPOINTS);
+        } else if (theBack->is_present){
+            f = stopBack->Loss(f, INTPOINTS);
+            m = stopBack->Loss(m, INTPOINTS);
+            b = stopBack->Loss(b, INTPOINTS);
+        }
+
+        if (theTelescope->has_absorber){
+            f = stopAbsor->Loss(f, INTPOINTS);
+            m = stopAbsor->Loss(m, INTPOINTS);
+            b = stopAbsor->Loss(b, INTPOINTS);
+        }
 
         df = stopDE->Loss(f, INTPOINTS);
         dm = stopDE->Loss(m, INTPOINTS);
@@ -494,6 +623,8 @@ bool Worker::Known(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
 
     // Materials.
     delete target;
+    delete front;
+    delete back;
     delete abs;
     delete dEdet;
     delete Edet;
@@ -504,6 +635,9 @@ bool Worker::Known(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
     // Stopping power calculators.
     delete stopTargetB;
     delete stopTargetF;
+    delete stopFrontB;
+    delete stopFrontF;
+    delete stopBack;
     delete stopAbsor;
     delete stopDE;
     delete stopE;

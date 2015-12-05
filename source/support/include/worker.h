@@ -57,10 +57,10 @@ private:
     Target_t *theTarget;
 
     //! Fronting of the target.
-    Extra_t *front;
+    Extra_t *theFront;
 
     //! Backing of the target.
-    Extra_t *back;
+    Extra_t *theBack;
 
     //! The current telescope.
     Telescope_t *theTelescope;
