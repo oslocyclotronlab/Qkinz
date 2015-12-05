@@ -34,6 +34,7 @@ SOURCES +=  source/main.cpp \
             source/gui/src/rundialog.cpp \
             source/gui/src/selecttargetform.cpp \
             source/gui/src/selecttelescopeform.cpp \
+            source/gui/src/selectfrontbackform.cpp \
             source/kinematics/src/BetheBlock.cpp \
             source/kinematics/src/BetheBlockComp.cpp \
             source/kinematics/src/DickNorbury.cpp \
@@ -67,6 +68,7 @@ HEADERS  += source/gui/include/mainwindow.h \
             source/gui/include/rundialog.h \
             source/gui/include/selecttargetform.h \
             source/gui/include/selecttelescopeform.h \
+            source/gui/include/selectfrontbackform.h \
             source/kinematics/include/BetheBlock.h \
             source/kinematics/include/BetheBlockComp.h \
             source/kinematics/include/DickNorbury.h \
@@ -93,13 +95,13 @@ HEADERS  += source/gui/include/mainwindow.h \
             source/tables/include/ziegler1985_table.h \
             source/tables/include/excitation.h \
             source/global.h \
-            source/types.h 
-            
+            source/types.h
 
 FORMS    += source/gui/forms/mainwindow.ui \
             source/gui/forms/selectbeamform.ui \
             source/gui/forms/selecttargetform.ui \
             source/gui/forms/selecttelescopeform.ui \
-            source/gui/forms/rundialog.ui
+            source/gui/forms/rundialog.ui \
+            source/gui/forms/selectfrontbackform.ui
 
 RESOURCES += resources/resorces.qrc
