@@ -25,3 +25,5 @@ before_install:
 
 script:
   - make
+  - cd tests
+  - ./tests
