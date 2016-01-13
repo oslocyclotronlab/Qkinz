@@ -25,7 +25,7 @@ before_install:
 - scripts/travis_osx.sh
 script:
 - scripts/travis_qmake.sh
-- make
+- make -j2
 - ./build/tests/tests
 
 before_deploy:
