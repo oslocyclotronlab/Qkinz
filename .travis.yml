@@ -6,11 +6,13 @@ os:
 compile:
   - g++
 
+sudo: required
+dist: trusty
+
 addons:
   apt:
     sources:
       - ubuntu-sdk-team
-      - ubuntu-toolchain-r-test
     packages:
       - qtdeclarative5-dev
       - qtbase5-dev
@@ -18,14 +20,9 @@ addons:
       - libsqlite3-dev
       - qt5-default
       - qttools5-dev-tools
-      - gcc-5
-      - g++-5
 
 before_install:
   - scripts/travis_osx.sh
-
-install:
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
 
 script:
   - scripts/travis_qmake.sh
