@@ -1,0 +1,27 @@
+language: cpp
+
+os:
+	- linux
+	- osx
+
+compile:
+	- g++
+	- clang
+
+addons:
+	apt:
+		sources:
+			- ubuntu-sdk-team
+		packages:
+			- qtdeclarative5-dev
+			- qtbase5-dev
+			- libqt5webkit5-dev
+			- libsqlite3-dev
+			- qt5-default
+			- qttools5-dev-tools
+
+before_install:
+	- scripts/travis_osx.sh
+
+script:
+	- make
