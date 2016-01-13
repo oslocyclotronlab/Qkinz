@@ -25,7 +25,7 @@ SOURCES += main.cpp
 
 LIBS += -L$$BUILDDIR/src -lkinzgui
 
-linux-g++ {
+linux {
     binfile.files += $$BUILDDIR/app/$$TARGET
     binfile.path += /usr/bin/
     icon.files += $$PWD/../Qkinz.png
