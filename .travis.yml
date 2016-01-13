@@ -1,12 +1,12 @@
 language: cpp
 
 os:
-	- linux
-	- osx
+- linux
+- osx
 
 compile:
-	- g++
-	- clang
+- g++
+- clang
 
 addons:
 	apt:
