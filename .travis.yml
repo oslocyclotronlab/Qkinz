@@ -24,6 +24,7 @@ before_install:
   - scripts/travis_osx.sh
 
 script:
+  - scripts/travis_qmake.sh
   - make
   - cd tests
   - ./tests
