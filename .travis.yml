@@ -26,7 +26,7 @@ before_install:
 script:
 - scripts/travis_qmake.sh
 - make
-- ./tests/tests
+- ./build/tests/tests
 
 before_deploy:
 - scripts/travis_deploy.sh
@@ -35,7 +35,7 @@ deploy:
   provider: releases
   api_key:
     secure: UoWphEeoyOWf+tbeW75g1VfQcxQ+1VOUKUxus7xJ5uIuRShQqLm7UERn7N6hhFr5e4ccQk18zXs7t27kwYqZRDBH6cHwR8ns9EcXuZS4L9FQ20HS4+dqRxsUh2sTyhOx6jfY0PLOc7NvyBiVkcAjNMrybcekHzlrtNO8Gh9g08G1wi8j9dgJ4YDfRtppVkZn8MHcSmfKE4y+5rSun/Ztl91ofDW4Zm7sRct8XRJb+4woFajsPBKd+WhzcqYVohzvuwZFJNZCGofQUo0H6x82aQK63MsylFo2YonajNMeOkeBOYlxD4ZyHrr9nJW03+HtqEeYhcQi00/v8bGgcl79Ir5HbYrbqR9FFFw6HA1IQKNo+2A3t3OllPvuuHhiidXeriA8aDgPzMKJwzgTX4MSViM1JyiZC32W0oFMBHeMN8RGZoGWyYO7f13BllJxgy3GDJXUyNDgYwkH7J+igYz/kZElhZiFpiirl2wts0koqd4NSDDcC3A0iPt0Y3P+NZWnYIojxzA7LxrIXdb0wdIAVkknIMjV1wLFl7e7mdMMmlCAQQYMvNKhDhIiCWLVk2kRyqEYI4ofbAnrJ2ACCAWu5Vml/s4bwposjbP5tJ2zcvgxxYS+QH2OncnQfb5I8V7hClkgWLZ5arjxWa9+Y+8MboBDVNEk5dH3KIy4Hs4WW1M=
-  file: app/Qkinz.dmg
+  file: build/app/Qkinz.dmg
   skip_cleanup: true
   on:
     condition: "$TRAVIS_OS_NAME = osx" 
