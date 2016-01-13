@@ -13,14 +13,11 @@ TEMPLATE = lib
 CONFIG += staticlib
 
 
-#unix {
-#    BUILDDIR = $$PWD/../build
-#    DESTDIR = $$BUILDDIR
-#    OBJECTS_DIR = $$BUILDDIR
-#    MOC_DIR = $$BUILDDIR
-#    RCC_DIR = $$BUILDDIR
-#    UI_DIR = $$BUILDDIR
-#}
+DESTDIR = $$BUILDDIR/src
+OBJECTS_DIR = $$BUILDDIR/src/objects
+MOC_DIR = $$BUILDDIR/src/moc
+RCC_DIR = $$BUILDDIR/src/rcc
+UI_DIR = $$BUILDDIR/src/ui
 
 macx {
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.9
@@ -110,21 +107,7 @@ FORMS    += gui/forms/mainwindow.ui \
 
 RESOURCES += ../resources/resorces.qrc
 
-unix {
-    binfile.files += $$BUILDDIR/$$TARGET
-    binfile.path += /usr/bin/
-    icon.files += $$PWD/Qkinz.png
-    icon.path += /usr/share/$$TARGET
-    desktop.path = /usr/share/applications/
-    desktop.files = $$PWD/Qkinz.desktop
-    INSTALLS += binfile
-    INSTALLS += icon
-    INSTALLS += desktop
-}
-
-QMAKE_CLEAN +=  $$BUILDDIR/*.o \
-                $$BUILDDIR/moc_* \
-                $$BUILDDIR/ui_*
-
-QMAKE_DISTCLEAN +=  $$PWD/Makefile \
-                    $$PWD/*.pro.*
+QMAKE_CLEAN +=  $$BUILDDIR/src/objects/*.o \
+                $$BUILDDIR/src/moc/moc_* \
+                $$BUILDDIR/src/rcc/qrc_* \
+                $$BUILDDIR/src/ui/ui_*
