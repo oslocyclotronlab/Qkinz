@@ -554,7 +554,7 @@ void MainWindow::on_actionExport_plot_triggered()
 
 void MainWindow::on_actionExport_table_triggered()
 {
-    QString Filters("PDF (*.pdf);;HTML (*.html)");
+    QString Filters("PDF (*.pdf);;HTML (*.html);;Text file (*.txt)");
     QString DefaultFilter("PDF (*.pdf)");
     QFileDialog *SaveTabDialog = new QFileDialog(this);
 
@@ -569,6 +569,14 @@ void MainWindow::on_actionExport_table_triggered()
         if (file.open(QIODevice::WriteOnly|QIODevice::Text)){
             QTextStream out(&file);
             out << htmlCode;
+        }
+        file.close();
+    } else if (FilePath.endsWith("txt", Qt::CaseInsensitive)){
+        QString txt = table.getTXT();
+        QFile file(FilePath);
+        if (file.open(QIODevice::WriteOnly|QIODevice::Text)){
+            QTextStream out(&file);
+            out << txt;
         }
         file.close();
     }

@@ -1,3 +1,5 @@
+
+
 #ifndef TABLEMAKERHTML_H
 #define TABLEMAKERHTML_H
 
@@ -51,6 +53,10 @@ public:
 
     //! Returns the created page as HTML code.
     QString getHTMLCode();
+
+    //! Returns the created page as txt file table.
+    QString getTXT();
+
 private:
     //! Internal structure to hold data recived by the class.
     struct Result_t {
@@ -123,10 +129,20 @@ private:
      */
     QString makeTable(Result_t what /*!< Strucure containing the data to write to table.    */);
 
+    //! Fuction to make a table from a result structure.
+    /*! \return the txt string used for the table.
+     */
+    QString makeTableTXT(Result_t what /*!< Structure containing the data to write to table.    */);
+
     //! Function to make html code from the coefficients.
     /*! \return the html code for nice output of the coefficients.
      */
     QString makeCoeff(QVector<double> coeff /*!< Vector containing the coefficients.    */);
+
+    //! Function to make txt code from the coefficients.
+    /*! \return the txt string for nice output of the coefficients.
+     */
+    QString makeCoeffTXT(QVector<double> coeff /*!< Vector containing the coefficients. */);
 };
 
 #endif // TABLEMAKERHTML_H

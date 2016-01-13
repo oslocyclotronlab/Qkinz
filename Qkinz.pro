@@ -51,6 +51,7 @@ SOURCES +=  source/main.cpp \
             source/kinematics/src/FileSP.cpp \
             source/kinematics/src/Iterative.cpp \
             source/kinematics/src/Scattering.cpp \
+            source/kinematics/src/LNScattering.cpp \
             source/kinematics/src/StoppingPower.cpp \
             source/kinematics/src/Ziegler1985.cpp \
             source/kinematics/src/ZieglerComp.cpp \
@@ -85,6 +86,7 @@ HEADERS  += source/gui/include/mainwindow.h \
             source/kinematics/include/FileSP.h \
             source/kinematics/include/Iterative.h \
             source/kinematics/include/Scattering.h \
+            source/kinematics/include/LNScattering.h \
             source/kinematics/include/StoppingPower.h \
             source/kinematics/include/Ziegler1985.h \
             source/kinematics/include/ZieglerComp.h \
