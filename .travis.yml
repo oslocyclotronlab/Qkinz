@@ -25,7 +25,7 @@ before_install:
   - scripts/travis_osx.sh
 
 install:
-  - [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
 
 script:
   - scripts/travis_qmake.sh
