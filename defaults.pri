@@ -7,3 +7,5 @@ INCLUDEPATH += $$PWD/src \
 		$$PWD/src/tables/include
 
 SRC_DIR = $$PWD
+
+BUILDDIR = $$PWD/build
