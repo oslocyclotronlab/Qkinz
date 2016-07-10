@@ -44,6 +44,7 @@ SOURCES +=  gui/src/mainwindow.cpp \
             kinematics/src/StoppingPower.cpp \
             kinematics/src/Ziegler1985.cpp \
             kinematics/src/ZieglerComp.cpp \
+            kinematics/src/RelScatter.cpp \
             math/src/AbstractFunction.cpp \
             math/src/Matrix.cpp \
             math/src/PolyD2.cpp \
@@ -79,6 +80,7 @@ HEADERS  += gui/include/mainwindow.h \
             kinematics/include/StoppingPower.h \
             kinematics/include/Ziegler1985.h \
             kinematics/include/ZieglerComp.h \
+            kinematics/include/RelScatter.h \
             math/include/AbstractFunction.h \
             math/include/Matrix.h \
             math/include/PolyD2.h \
