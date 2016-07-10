@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1489</width>
-    <height>998</height>
+    <width>1399</width>
+    <height>849</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,6 +38,9 @@
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_3">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetFixedSize</enum>
+           </property>
            <item>
             <layout class="QHBoxLayout" name="Layout_beamInfo">
              <item>
@@ -553,26 +556,16 @@
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::MinimumExpanding</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>198</width>
-             <height>13</height>
+             <height>0</height>
             </size>
            </property>
           </spacer>
-         </item>
-         <item>
-          <widget class="QLabel" name="OCLlogo">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="pixmap">
-            <pixmap resource="../../../resources/resorces.qrc">:/media/clab-logo-med.gif</pixmap>
-           </property>
-           <property name="scaledContents">
-            <bool>true</bool>
-           </property>
-          </widget>
          </item>
         </layout>
        </widget>
@@ -620,7 +613,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1489</width>
+     <width>1399</width>
      <height>22</height>
     </rect>
    </property>

@@ -7,6 +7,7 @@
 
 #include "Scattering.h"
 #include "DickNorbury.h"
+#include "RelScatter.h"
 #include "StoppingPower.h"
 #include "Ziegler1985.h"
 #include "ame2012_masses.h"
@@ -48,7 +49,7 @@ RunSystem::~RunSystem()
 
 int RunSystem::Run(const double &Energy, const double &Angle) const
 {
-    DickNorbury  *scat = new DickNorbury(beam, scatIso, fragment, residual);
+    RelScatter  *scat = new RelScatter(beam, scatIso, fragment, residual);
     Ziegler1985 *stopTargetB = new Ziegler1985(target, beam);
     Ziegler1985 *stopTargetF = new Ziegler1985(target, fragment);
     Ziegler1985 *stopAbsor = new Ziegler1985(absorber, fragment);
@@ -57,9 +58,9 @@ int RunSystem::Run(const double &Energy, const double &Angle) const
 
     double Ehalf = stopTargetB->Loss(Energy, target->GetWidth(), INTPOINTS);
     double Ehole = stopTargetB->Loss(Energy, INTPOINTS);
-    double Exmax = get_Q_keV(beam->GetA(), beam->GetZ(), scatIso->GetA(), scatIso->GetZ(), fragment->GetA(), fragment->GetZ())/1000;
+    double Exmax = scat->FindMaxEx(Ehalf, Angle);
 
-    Exmax += Energy;
+    //Exmax += Energy;
     double dEX = Exmax/double(POINTS - 1);
     double f, m, b;
     double df, dm, db;
