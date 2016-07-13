@@ -37,569 +37,583 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_3">
-           <property name="sizeConstraint">
-            <enum>QLayout::SetFixedSize</enum>
+          <widget class="QWidget" name="" native="true">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
-           <item>
-            <layout class="QHBoxLayout" name="Layout_beamInfo">
-             <item>
-              <widget class="QLabel" name="BeamTypeLabel">
-               <property name="text">
-                <string>Current beam:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="CurrentBeam">
-               <property name="text">
-                <string>A^B</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="LayoutBeamEnergy">
-             <item>
-              <widget class="QLabel" name="EnergyLabel">
-               <property name="text">
-                <string>Beam energy(MeV):</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="CurrentEnergy">
-               <property name="text">
-                <string>20</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QPushButton" name="ChangeBeamButton">
-             <property name="text">
-              <string>Change beam</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="LayoutTarget">
-             <item>
-              <widget class="QLabel" name="TargetLabel">
-               <property name="text">
-                <string>Target:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="CurrentTarget">
-               <property name="text">
-                <string>A^B</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="LayoutThickness">
-             <item>
-              <widget class="QLabel" name="ThicknessLabel">
-               <property name="text">
-                <string>Target thickness:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="CurrentThickness">
-               <property name="text">
-                <string>2.50</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="TargetUnitLabel">
-               <property name="text">
-                <string>mg/cm2</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QPushButton" name="ChangeTargetButton">
-             <property name="text">
-              <string>Change target</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
-             <item>
-              <widget class="QLabel" name="FrontLabel">
-               <property name="text">
-                <string>Target front:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="CurrentFront">
-               <property name="layoutDirection">
-                <enum>Qt::LeftToRight</enum>
-               </property>
-               <property name="text">
-                <string>-</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_5">
-             <item>
-              <widget class="QLabel" name="FrontWidthLabel">
-               <property name="text">
-                <string>Front width:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="FrontWidth">
-               <property name="layoutDirection">
-                <enum>Qt::LeftToRight</enum>
-               </property>
-               <property name="text">
-                <string>-</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="FrontUnitLabel">
-               <property name="text">
-                <string>mg/cm2</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_6">
-             <item>
-              <widget class="QLabel" name="BackLabel">
-               <property name="text">
-                <string>Target back:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="CurrentBack">
-               <property name="layoutDirection">
-                <enum>Qt::LeftToRight</enum>
-               </property>
-               <property name="text">
-                <string>-</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_7">
-             <item>
-              <widget class="QLabel" name="BackWidthLabel">
-               <property name="text">
-                <string>Back width:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="BackWidth">
-               <property name="layoutDirection">
-                <enum>Qt::LeftToRight</enum>
-               </property>
-               <property name="text">
-                <string>-</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="BackUnitLabel">
-               <property name="text">
-                <string>mg/cm2</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QPushButton" name="ChangeFBButton">
-             <property name="text">
-              <string>Change front/back</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="layoutDEmat">
-             <item>
-              <widget class="QLabel" name="dEMatLabel">
-               <property name="text">
-                <string>dE detector material:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="dEMatSym">
-               <property name="text">
-                <string>Si</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="dEdetLayout">
-             <item>
-              <widget class="QLabel" name="dEdetLabel">
-               <property name="text">
-                <string>dE detector width:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="CurrentDE">
-               <property name="text">
-                <string>150</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="dEdetUnitLabel">
-               <property name="text">
-                <string>um</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="layoutEmat">
-             <item>
-              <widget class="QLabel" name="EMatLabel">
-               <property name="text">
-                <string>E detector material:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="EMatSym">
-               <property name="text">
-                <string>Si</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="LayoutEdet">
-             <item>
-              <widget class="QLabel" name="EdetLabel">
-               <property name="text">
-                <string>E detector width:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="CurrentE">
-               <property name="text">
-                <string>1550</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="EdetUnitLabel">
-               <property name="text">
-                <string>um</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="LayoutAbsMat">
-             <item>
-              <widget class="QLabel" name="AbsMatLabel">
-               <property name="text">
-                <string>Absorber material:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="AMatSym">
-               <property name="text">
-                <string>Al</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="LayoutAbs">
-             <item>
-              <widget class="QLabel" name="AbsWLabel">
-               <property name="text">
-                <string>Absorber width:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="CurrentA">
-               <property name="text">
-                <string>10.5</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="AbsUnitLabel">
-               <property name="text">
-                <string>um</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QPushButton" name="ChangeTelescopeButton">
-             <property name="text">
-              <string>Change telescope</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="LayoutStrip">
-             <item>
-              <widget class="QLabel" name="StripLabel">
-               <property name="text">
-                <string>Strip:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QSpinBox" name="StripNumbr">
-               <property name="minimum">
-                <number>0</number>
-               </property>
-               <property name="maximum">
-                <number>7</number>
-               </property>
-               <property name="value">
-                <number>0</number>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="LayoutManual">
-             <item>
-              <widget class="QLabel" name="manAngleLabel">
-               <property name="text">
-                <string>Angle:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QDoubleSpinBox" name="manAngleInput">
-               <property name="minimum">
-                <double>0.000000000000000</double>
-               </property>
-               <property name="maximum">
-                <double>180.000000000000000</double>
-               </property>
-               <property name="value">
-                <double>0.000000000000000</double>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout">
-             <item>
-              <layout class="QVBoxLayout" name="verticalLayout">
-               <item>
-                <widget class="QLabel" name="label">
-                 <property name="text">
-                  <string>Fragment:</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="protons">
-                 <property name="text">
-                  <string>Protons</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="deutrons">
-                 <property name="text">
-                  <string>Deutrons</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="tritons">
-                 <property name="text">
-                  <string>Tritons</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="He3s">
-                 <property name="text">
-                  <string>He-3</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="alphas">
-                 <property name="text">
-                  <string>α's</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="verticalSpacer_3">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeType">
-                  <enum>QSizePolicy::MinimumExpanding</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QVBoxLayout" name="verticalLayout_2">
-               <item>
-                <widget class="QLabel" name="AngleLabel">
-                 <property name="text">
-                  <string>Angle:</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QRadioButton" name="FwdAngRButton">
-                 <property name="text">
-                  <string>47°</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QRadioButton" name="BwdAngRButton">
-                 <property name="text">
-                  <string>133°</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QRadioButton" name="manAngle">
-                 <property name="text">
-                  <string>Manual</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="RunButton">
-                 <property name="text">
-                  <string>Run</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="ResetButton">
-                 <property name="text">
-                  <string>Reset</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="verticalSpacer">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeType">
-                  <enum>QSizePolicy::MinimumExpanding</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>10</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </item>
-          </layout>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>790</height>
+            </size>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetFixedSize</enum>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" name="Layout_beamInfo">
+              <item>
+               <widget class="QLabel" name="BeamTypeLabel">
+                <property name="text">
+                 <string>Current beam:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="CurrentBeam">
+                <property name="text">
+                 <string>A^B</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="LayoutBeamEnergy">
+              <item>
+               <widget class="QLabel" name="EnergyLabel">
+                <property name="text">
+                 <string>Beam energy(MeV):</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="CurrentEnergy">
+                <property name="text">
+                 <string>20</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QPushButton" name="ChangeBeamButton">
+              <property name="text">
+               <string>Change beam</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="LayoutTarget">
+              <item>
+               <widget class="QLabel" name="TargetLabel">
+                <property name="text">
+                 <string>Target:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="CurrentTarget">
+                <property name="text">
+                 <string>A^B</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="LayoutThickness">
+              <item>
+               <widget class="QLabel" name="ThicknessLabel">
+                <property name="text">
+                 <string>Target thickness:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="CurrentThickness">
+                <property name="text">
+                 <string>2.50</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="TargetUnitLabel">
+                <property name="text">
+                 <string>mg/cm2</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QPushButton" name="ChangeTargetButton">
+              <property name="text">
+               <string>Change target</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_4">
+              <item>
+               <widget class="QLabel" name="FrontLabel">
+                <property name="text">
+                 <string>Target front:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="CurrentFront">
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
+                <property name="text">
+                 <string>-</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QLabel" name="FrontWidthLabel">
+                <property name="text">
+                 <string>Front width:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="FrontWidth">
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
+                <property name="text">
+                 <string>-</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="FrontUnitLabel">
+                <property name="text">
+                 <string>mg/cm2</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <item>
+               <widget class="QLabel" name="BackLabel">
+                <property name="text">
+                 <string>Target back:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="CurrentBack">
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
+                <property name="text">
+                 <string>-</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_7">
+              <item>
+               <widget class="QLabel" name="BackWidthLabel">
+                <property name="text">
+                 <string>Back width:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="BackWidth">
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
+                <property name="text">
+                 <string>-</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="BackUnitLabel">
+                <property name="text">
+                 <string>mg/cm2</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QPushButton" name="ChangeFBButton">
+              <property name="text">
+               <string>Change front/back</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="layoutDEmat">
+              <item>
+               <widget class="QLabel" name="dEMatLabel">
+                <property name="text">
+                 <string>dE detector material:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="dEMatSym">
+                <property name="text">
+                 <string>Si</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="dEdetLayout">
+              <item>
+               <widget class="QLabel" name="dEdetLabel">
+                <property name="text">
+                 <string>dE detector width:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="CurrentDE">
+                <property name="text">
+                 <string>150</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="dEdetUnitLabel">
+                <property name="text">
+                 <string>um</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="layoutEmat">
+              <item>
+               <widget class="QLabel" name="EMatLabel">
+                <property name="text">
+                 <string>E detector material:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="EMatSym">
+                <property name="text">
+                 <string>Si</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="LayoutEdet">
+              <item>
+               <widget class="QLabel" name="EdetLabel">
+                <property name="text">
+                 <string>E detector width:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="CurrentE">
+                <property name="text">
+                 <string>1550</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="EdetUnitLabel">
+                <property name="text">
+                 <string>um</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="LayoutAbsMat">
+              <item>
+               <widget class="QLabel" name="AbsMatLabel">
+                <property name="text">
+                 <string>Absorber material:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="AMatSym">
+                <property name="text">
+                 <string>Al</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="LayoutAbs">
+              <item>
+               <widget class="QLabel" name="AbsWLabel">
+                <property name="text">
+                 <string>Absorber width:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="CurrentA">
+                <property name="text">
+                 <string>10.5</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="AbsUnitLabel">
+                <property name="text">
+                 <string>um</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QPushButton" name="ChangeTelescopeButton">
+              <property name="text">
+               <string>Change telescope</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="LayoutStrip">
+              <item>
+               <widget class="QLabel" name="StripLabel">
+                <property name="text">
+                 <string>SiRi Strip:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSpinBox" name="StripNumbr">
+                <property name="minimum">
+                 <number>0</number>
+                </property>
+                <property name="maximum">
+                 <number>7</number>
+                </property>
+                <property name="value">
+                 <number>0</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="LayoutManual">
+              <item>
+               <widget class="QLabel" name="manAngleLabel">
+                <property name="text">
+                 <string>Angle:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="manAngleInput">
+                <property name="minimum">
+                 <double>0.000000000000000</double>
+                </property>
+                <property name="maximum">
+                 <double>180.000000000000000</double>
+                </property>
+                <property name="value">
+                 <double>0.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout">
+                <item>
+                 <widget class="QLabel" name="label">
+                  <property name="text">
+                   <string>Fragment:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="protons">
+                  <property name="text">
+                   <string>Protons</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="deutrons">
+                  <property name="text">
+                   <string>Deutrons</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="tritons">
+                  <property name="text">
+                   <string>Tritons</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="He3s">
+                  <property name="text">
+                   <string>He-3</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="alphas">
+                  <property name="text">
+                   <string>α's</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_3">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::MinimumExpanding</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_2">
+                <item>
+                 <widget class="QLabel" name="AngleLabel">
+                  <property name="text">
+                   <string>Angle:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="FwdAngRButton">
+                  <property name="text">
+                   <string>47°</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="BwdAngRButton">
+                  <property name="text">
+                   <string>133°</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="manAngle">
+                  <property name="text">
+                   <string>Manual</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="RunButton">
+                  <property name="text">
+                   <string>Run</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="ResetButton">
+                  <property name="text">
+                   <string>Reset</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeType">
+                   <enum>QSizePolicy::MinimumExpanding</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>10</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
          </item>
          <item>
           <spacer name="verticalSpacer_2">
