@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1024</width>
-    <height>911</height>
+    <height>901</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -422,7 +422,7 @@
              <item>
               <widget class="QLabel" name="StripLabel">
                <property name="text">
-                <string>Strip:</string>
+                <string>SiRi strip:</string>
                </property>
               </widget>
              </item>
