@@ -128,6 +128,9 @@ private slots:
     //! Show the about QCustomPlot dialog.
     void on_actionAbout_QCustomPlot_triggered();
 
+    //! Angle ratio button is toggled.
+    void on_toggle_Angle(bool);
+
 private:
     //! The ui of the window.
     Ui::MainWindow *ui;

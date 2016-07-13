@@ -80,6 +80,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->actionClose, SIGNAL(triggered(bool)), this, SLOT(close()));
 
+    connect(ui->manAngle, SIGNAL(toggled(bool)), this, SLOT(on_toggle_Angle(bool)));
+
     // Setting default values. Should be done from saved file?
     theBeam.A = 1;
     theBeam.Z = 1;
@@ -112,6 +114,9 @@ MainWindow::MainWindow(QWidget *parent)
     theTelescope.Absorber.Z = 13;
     theTelescope.Absorber.width = 10.5;
     theTelescope.Absorber.unit = um;
+
+    ui->StripNumbr->setEnabled(true);
+    ui->manAngleInput->setEnabled(false);
 
     Refresh();
 }
@@ -149,6 +154,8 @@ void MainWindow::Reset_All()
     theTelescope.Absorber.Z = 13;
     theTelescope.Absorber.width = 10.5;
     theTelescope.Absorber.unit = um;
+    ui->StripNumbr->setEnabled(true);
+    ui->manAngleInput->setEnabled(false);
 
     RemoveAllGraphs();
     Refresh();
@@ -327,10 +334,15 @@ void MainWindow::run()
 
     RemoveAllGraphs();
     table.Reset();
+    double angle;
 
-    double angle = (ui->StripNumbr->value()*2 + 40)*PI/180;
-    if (ui->BwdAngRButton->isChecked()){
-        angle = PI - angle;
+    if (ui->manAngle->isChecked()){
+        angle = ui->manAngleInput->value()*PI/180.;
+    } else {
+        angle = (ui->StripNumbr->value()*2 + 40)*PI/180;
+        if (ui->BwdAngRButton->isChecked()){
+            angle = PI - angle;
+        }
     }
 
     emit operate(angle, ui->protons->isChecked(), ui->deutrons->isChecked(), ui->tritons->isChecked(), ui->He3s->isChecked(), ui->alphas->isChecked());
@@ -521,4 +533,15 @@ void MainWindow::on_actionAbout_QCustomPlot_triggered()
     ts.setCodec("UTF-8");
     QMessageBox::about(this, tr("About QCustomPlot 1.30"), ts.readAll());
     file.close();
+}
+
+void MainWindow::on_toggle_Angle(bool)
+{
+    if (ui->manAngle->isChecked()){
+        ui->StripNumbr->setDisabled(true);
+        ui->manAngleInput->setEnabled(true);
+    } else {
+        ui->StripNumbr->setEnabled(true);
+        ui->manAngleInput->setEnabled(false);
+    }
 }

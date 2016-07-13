@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1399</width>
-    <height>849</height>
+    <width>1024</width>
+    <height>911</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -442,6 +442,30 @@
             </layout>
            </item>
            <item>
+            <layout class="QHBoxLayout" name="LayoutManual">
+             <item>
+              <widget class="QLabel" name="manAngleLabel">
+               <property name="text">
+                <string>Angle:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDoubleSpinBox" name="manAngleInput">
+               <property name="minimum">
+                <double>0.000000000000000</double>
+               </property>
+               <property name="maximum">
+                <double>180.000000000000000</double>
+               </property>
+               <property name="value">
+                <double>0.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
             <layout class="QHBoxLayout" name="horizontalLayout">
              <item>
               <layout class="QVBoxLayout" name="verticalLayout">
@@ -490,6 +514,22 @@
                  </property>
                 </widget>
                </item>
+               <item>
+                <spacer name="verticalSpacer_3">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::MinimumExpanding</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
               </layout>
              </item>
              <item>
@@ -519,17 +559,11 @@
                 </widget>
                </item>
                <item>
-                <spacer name="verticalSpacer">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
+                <widget class="QRadioButton" name="manAngle">
+                 <property name="text">
+                  <string>Manual</string>
                  </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                </spacer>
+                </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="RunButton">
@@ -544,6 +578,22 @@
                   <string>Reset</string>
                  </property>
                 </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::MinimumExpanding</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>10</height>
+                  </size>
+                 </property>
+                </spacer>
                </item>
               </layout>
              </item>
@@ -592,8 +642,8 @@
          </attribute>
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="0" column="0">
-           <widget class="QWebView" name="webView">
-            <property name="url">
+           <widget class="QWebView" name="webView" native="true">
+            <property name="url" stdset="0">
              <url>
               <string>about:blank</string>
              </url>
@@ -613,7 +663,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1399</width>
+     <width>1024</width>
      <height>22</height>
     </rect>
    </property>
