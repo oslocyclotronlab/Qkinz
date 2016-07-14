@@ -2,7 +2,7 @@ include(../defaults.pri)
 
 QT += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport webkitwidgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport webenginewidgets
 
 TARGET = Qkinz
 TEMPLATE = app
@@ -15,8 +15,8 @@ UI_DIR = $$BUILDDIR/app
 
 macx {
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.9
-    QMAKE_CXXFLAGS += -std=c++11 #-O3
-    LIBS += -dead_strip  #-stdlib=libc++
+    QMAKE_CXXFLAGS += -std=c++11 -O3 -fprofile-instr-use=/Users/vetlewi/Documents/QtProjects/Qkinz/Qkinz.profdata
+    LIBS += -dead_strip -fprofile-instr-use=/Users/vetlewi/Documents/QtProjects/Qkinz/Qkinz.profdata  #-stdlib=libc++
     ICON = ../resources/media/Qkinz.icns
 }
 

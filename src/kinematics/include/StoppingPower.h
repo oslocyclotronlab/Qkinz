@@ -2,6 +2,7 @@
 #define STOPPINGPOWER_H
 
 #include "AbstractFunction.h"
+#include "types.h"
 
 #include <memory>
 
@@ -29,7 +30,7 @@ public:
      *  the material.
      */
     virtual double Loss(const double &E,        /*!< Initial energy of the incident particle in [MeV].  */
-                        const int &points=1000  /*!< Number of integration points.                      */) const=0;
+                        const int &points=1001  /*!< Number of integration points.                      */) const=0;
 
     //! Calculates energy loss in the material.
     /*! \return The energy after passing through
@@ -37,7 +38,26 @@ public:
      */
     virtual double Loss(const double &E,        /*!< Initial energy of the incident particle in [MeV].      */
                         const double &width,    /*!< Width of the target. Units depends on implementation.  */
-                        const int &points=1000  /*!< Number of integration points.                          */) const=0;
+                        const int &points=1001  /*!< Number of integration points.                          */) const=0;
+
+    virtual adouble Loss(adouble E, int points=1001)=0;
+    virtual adouble Loss(adouble E, double width, int points=1001)=0;
+
+
+    //! Calculates energy after the reversed process.
+    /*! \return The energy before passing through
+     *  the material.
+     */
+    //virtual double Gain(const double &E,        /*!< Energy of the incident particle in [MeV] after material.   */
+    //                    const int &points=1000  /*!< Number of integration points.                              */) const=0;
+
+    //! Calculates energy after the reversed process.
+    /*! \return The energy before passing through
+     *  the material.
+     */
+    //virtual double Gain(const double &E,        /*!< Energy of the incident particle in [MeV] after material.   */
+    //                    const double &width,    /*!< Width of the target. Units depends on implementation.      */
+    //                    const int &points=1000  /*!< Number of integration points.                              */) const=0;
 
 	//! Overloaded () operator.
 	/*! \return \ref Evaluate.

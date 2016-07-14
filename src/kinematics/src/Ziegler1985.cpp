@@ -55,6 +55,23 @@ double Ziegler1985::Loss(const double &E, const double &d, const int &points) co
     return e/1e3;
 }
 
+double Ziegler1985::Gain(const double &E, const double &d, const int &points) const
+{
+    double dx = d/points;
+    double e = E*1e3;
+    if (d <= 0)
+        return e;
+    double R1, R2, R3, R4;
+    for (int i = 0 ; i < points ; ++i){
+        R1 = -dx*Evaluate(e);
+        R2 = -dx*Evaluate(e + 0.5*R1);
+        R3 = -dx*Evaluate(e + 0.5*R2);
+        R4 = -dx*Evaluate(e + R3);
+        e += (R1 + 2*(R2 + R3) + R4)/6.0;
+    }
+    return e/1e3;
+}
+
 double Ziegler1985::Loss(const double &E, const int &points) const
 {
     double d = pMaterial->GetWidth(Material::um);
@@ -64,6 +81,55 @@ double Ziegler1985::Loss(const double &E, const int &points) const
     }
     return Loss(E, d, points);
 }
+
+double Ziegler1985::Gain(const double &E, const int &points) const
+{
+    double d = pMaterial->GetWidth(Material::um);
+    if ( d <= 0 ){
+        //std::cerr << "Width of material not set. Defaulting to 100 µm." << std::endl;
+        return Gain(E, 100, points);
+    }
+    return Gain(E, d, points);
+}
+
+adouble Ziegler1985::Loss(adouble E, int points)
+{
+    double dx = pMaterial->GetWidth(Material::gcm2)/(points - 1);
+    adouble e = E*1e3;
+    adouble R1(E.size()), R2(E.size()), R3(E.size()), R4(E.size());
+    for (int i = 0 ; i < points ; ++i){
+        for (int j = 0 ; j < E.size() ; ++j){
+            R1[j] = dx*Evaluate(e[j]);
+            R2[j] = dx*Evaluate(e[j] + 0.5*R1[j]);
+            R3[j] = dx*Evaluate(e[j] + 0.5*R2[j]);
+            R4[j] = dx*Evaluate(e[j] + R3[j]);
+        }
+        e += (R1 + 0.5*(R2 + R3) + R4)/6.0;
+    }
+    e[e<0] = 0.0;
+    e[e!=e] = 0.0;
+    return e/1e3;
+}
+
+adouble Ziegler1985::Loss(adouble E, double width, int points)
+{
+    double dx = width/(points - 1);
+    adouble e = E*1e3;
+    adouble R1(E.size()), R2(E.size()), R3(E.size()), R4(E.size());
+    for (int i = 0 ; i < points ; ++i){
+        for (int j = 0 ; j < E.size() ; ++j){
+            R1[j] = dx*Evaluate(e[j]);
+            R2[j] = dx*Evaluate(e[j] + 0.5*R1[j]);
+            R3[j] = dx*Evaluate(e[j] + 0.5*R2[j]);
+            R4[j] = dx*Evaluate(e[j] + R3[j]);
+        }
+        e += (R1 + 0.5*(R2 + R3) + R4)/6.0;
+    }
+    e[e<0] = 0.0;
+    e[e!=e] = 0.0;
+    return e/1e3;
+}
+
 
 double Ziegler1985::pstop(const double &e) const
 {

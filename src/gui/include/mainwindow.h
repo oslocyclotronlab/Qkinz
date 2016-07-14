@@ -14,6 +14,7 @@
 
 #include "types.h"
 #include "worker.h"
+#include "BatchReader.h"
 
 #include "tablemakerhtml.h"
 
@@ -36,6 +37,7 @@ public:
 
 signals:
     void operate(const double &Angle, const bool &p, const bool &d, const bool &t, const bool &h3, const bool &a);
+    void runBatchFile(QString batchfile);
 
 public slots:
     //! Slot for reciving curve data from the worker. It will plot the data for the
@@ -55,6 +57,8 @@ public slots:
 
     //! Slot to indicate that the worker is finished with calculations.
     void WorkFinished();
+
+    void finishBFile();
 
 private slots:
     //! Slot for showing the change beam dialog.
@@ -92,6 +96,9 @@ private slots:
     //! Perform the calculations with the parameters given by the user.
     void run();
 
+    //! Reads and runs calculations specified in a batch file.
+    void BatchFile();
+
     //! Refresh the view. Sets all the labels to the correct values.
     void Refresh();
 
@@ -128,6 +135,9 @@ private slots:
     //! Show the about QCustomPlot dialog.
     void on_actionAbout_QCustomPlot_triggered();
 
+    //! Angle ratio button is toggled.
+    void on_toggle_Angle(bool);
+
 private:
     //! The ui of the window.
     Ui::MainWindow *ui;
@@ -150,6 +160,9 @@ private:
     //! Class doing all the calculations.
     Worker *worker;
 
+    //! Class reading and executing batch files.
+    BatchReader *bReader;
+
     //! Struct containing information about the beam.
     Beam_t theBeam;
 
@@ -167,6 +180,9 @@ private:
 
     //! Thread to run the calculations.
     QThread workThread;
+
+    //! Thread to run batch calculations.
+    QThread batchThread;
 
     //! Class making the tables.
     TableMakerHTML table;
@@ -189,6 +205,9 @@ private:
                         QVector<double> y,  /*!< y-values.              */
                         QVector<double> dy, /*!< Error of the y-values. */
                         QPen pen            /*!< Color of the points.   */);
+
+    QStringList batchFiles;
+    int currentBatch;
 };
 
 #endif // MAINWINDOW_H

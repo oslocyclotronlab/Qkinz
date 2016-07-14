@@ -6,11 +6,11 @@
 include(../defaults.pri)
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport webkitwidgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport webenginewidgets
 
 TARGET = kinzgui
 TEMPLATE = lib
-CONFIG += staticlib
+CONFIG += static
 
 
 DESTDIR = $$BUILDDIR/src
@@ -21,8 +21,8 @@ UI_DIR = $$BUILDDIR/src/ui
 
 macx {
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.9
-    QMAKE_CXXFLAGS += -std=c++11 #-O3
-    LIBS += -dead_strip  #-stdlib=libc++
+    QMAKE_CXXFLAGS += -std=c++11 -O3 -fprofile-instr-use=/Users/vetlewi/Documents/QtProjects/Qkinz/Qkinz.profdata
+    LIBS += -dead_strip -fprofile-instr-use=/Users/vetlewi/Documents/QtProjects/Qkinz/Qkinz.profdata  #-stdlib=libc++
 #    ICON = ../resources/media/Qkinz.icns
 }
 QMAKE_CXXFLAGS += -std=c++11
@@ -45,6 +45,7 @@ SOURCES +=  gui/src/mainwindow.cpp \
             kinematics/src/Ziegler1985.cpp \
             kinematics/src/ZieglerComp.cpp \
             kinematics/src/RelScatter.cpp \
+            kinematics/src/CustomPower.cpp \
             math/src/AbstractFunction.cpp \
             math/src/Matrix.cpp \
             math/src/PolyD2.cpp \
@@ -57,6 +58,7 @@ SOURCES +=  gui/src/mainwindow.cpp \
             support/src/runsystem.cpp \
             support/src/tablemakerhtml.cpp \
             support/src/worker.cpp \
+            support/src/BatchReader.cpp \
             tables/src/ame2012_mass_tables.cpp \
             tables/src/ame2012_masses.cpp \
             tables/src/ziegler1985_table.cpp \
@@ -81,6 +83,7 @@ HEADERS  += gui/include/mainwindow.h \
             kinematics/include/Ziegler1985.h \
             kinematics/include/ZieglerComp.h \
             kinematics/include/RelScatter.h \
+            kinematics/include/CustomPower.h \
             math/include/AbstractFunction.h \
             math/include/Matrix.h \
             math/include/PolyD2.h \
@@ -93,6 +96,7 @@ HEADERS  += gui/include/mainwindow.h \
             support/include/runsystem.h \
             support/include/tablemakerhtml.h \
             support/include/worker.h \
+            support/include/BatchReader.h \
             tables/include/ame2012_mass_tables.h \
             tables/include/ame2012_masses.h \
             tables/include/ziegler1985_table.h \

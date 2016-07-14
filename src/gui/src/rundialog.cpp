@@ -25,7 +25,6 @@ RunDialog::RunDialog(QWidget *parent) :
     ui->label->setScaledContents(true);
     connect(movie, SIGNAL(finished()), this, SLOT(startMovie()));
     movie->start();
-
 }
 
 RunDialog::~RunDialog()
@@ -37,6 +36,16 @@ RunDialog::~RunDialog()
 void RunDialog::startMovie()
 {
     movie->start();
+}
+
+void RunDialog::restart_counter()
+{
+    ui->progressBar->setValue(0);
+}
+
+void RunDialog::progress(double curr)
+{
+    ui->progressBar->setValue(curr);
 }
 
 void RunDialog::RunData(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,

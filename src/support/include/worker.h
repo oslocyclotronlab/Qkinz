@@ -3,8 +3,11 @@
 
 #include <QObject>
 #include <QThread>
+#include <memory>
 
+#include "CustomPower.h"
 #include "types.h"
+
 
 //! Worker class.
 //! This class handles all of the actual calls to other object that performs the calculations.
@@ -19,6 +22,12 @@ public:
            Extra_t *front,          /*!< Current target fronting settings.  */
            Extra_t *back,           /*!< Current target backing settings.   */
            Telescope_t *telescope   /*!< Current telescope settings.        */);
+
+    //! For batch use only! The function enables the use of custom stopping power
+    //! classes for the target. (eg. tabulated values).
+    void setCustomTarget(CustomPower *projectile, CustomPower *fragment);
+
+    bool getCoeff(const double &angle, const int &fA, const int &fZ, QVector<double> &coeff);
 
 public slots:
 
@@ -49,6 +58,8 @@ signals:
     //! Signal emitted when all calculations are complete.
     void FinishedAll();
 
+    void curr_prog(double);
+
 private:
     //! The current beam.
     Beam_t *theBeam;
@@ -64,6 +75,10 @@ private:
 
     //! The current telescope.
     Telescope_t *theTelescope;
+
+    std::unique_ptr<CustomPower> proCustom;
+    std::unique_ptr<CustomPower> fragCustom;
+    bool haveCpro, haveCfrag;
 
     //! Function to calculate using continious excitation energy.
     /*! \return true if reaction possible. false otherwise.
