@@ -1,9 +1,9 @@
 #ifndef GLOBAL
 #define GLOBAL
 
-#define POINTS 1000
+#define POINTS 501
 
-#define INTPOINTS 500
+#define INTPOINTS 501
 
 #endif // GLOBAL
 

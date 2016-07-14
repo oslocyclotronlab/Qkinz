@@ -16,8 +16,10 @@
 #include "ziegler1985_table.h"
 #include "ame2012_masses.h"
 #include "excitation.h"
+#include "CustomPower.h"
 
 #include <QVector>
+#include <iostream>
 
 #include "Vector.h"
 #include "Polyfit.h"
@@ -43,50 +45,91 @@ Worker::Worker(Beam_t *beam, Target_t *target, Extra_t *front, Extra_t *back, Te
     , theFront( front )
     , theBack( back )
     , theTelescope( telescope )
+    , haveCpro( false )
+    , haveCfrag( false )
 {
+}
+
+void Worker::setCustomTarget(CustomPower *projectile, CustomPower *fragment)
+{
+    proCustom.reset(projectile); haveCpro=true;
+    fragCustom.reset(fragment); haveCfrag=true;
+}
+
+bool Worker::getCoeff(const double &angle, const int &fragA, const int &fragZ, QVector<double> &coeff)
+{
+    QVector<double> ex, de, e;
+    return Curve(ex, de, e, coeff, angle, fragA, fragZ);
 }
 
 void Worker::Run(const double &Angle, const bool &p, const bool &d, const bool &t, const bool &h3, const bool &a)
 {
     QVector<double> ex, de, d_de, e, d_e, coeff;
+    int ntot = 0, nres=0;
+    if (p) ntot += 2;
+    if (d) ntot += 2;
+    if (t) ntot += 2;
+    if (h3) ntot += 2;
+    if (a) ntot += 2;
+
     if (p){
         if (Curve(ex, de, e, coeff, Angle, 1, 1)){
             emit ResultCurve(e, de, coeff, Proton);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
         }
         if (Known(ex, de, e, d_de, d_e, Angle, 1, 1)){
             emit ResultScatter(e, d_e, de, d_de, ex, Proton);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
         }
     }
     if (d){
         if (Curve(ex, de, e, coeff, Angle, 2, 1)){
             emit ResultCurve(e, de, coeff, Deutron);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
         }
         if (Known(ex, de, e, d_de, d_e, Angle, 2, 1)){
             emit ResultScatter(e, d_e, de, d_de, ex, Deutron);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
         }
     }
     if (t){
         if (Curve(ex, de, e, coeff, Angle, 3, 1)){
             emit ResultCurve(e, de, coeff, Triton);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
         }
         if (Known(ex, de, e, d_de, d_e, Angle, 3, 1)){
             emit ResultScatter(e, d_e, de, d_de, ex, Triton);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
         }
     }
     if (h3){
         if (Curve(ex, de, e, coeff, Angle, 3, 2)){
             emit ResultCurve(e, de, coeff, Helium3);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
         }
         if (Known(ex, de, e, d_de, d_e, Angle, 3, 2)){
             emit ResultScatter(e, d_e, de, d_de, ex, Helium3);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
         }
     }
     if (a){
         if (Curve(ex, de, e, coeff, Angle, 4, 2)){
             emit ResultCurve(e, de, coeff, Alpha);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
         }
         if (Known(ex, de, e, d_de, d_e, Angle, 4, 2)){
             emit ResultScatter(e, d_e, de, d_de, ex, Alpha);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
         }
     }
     emit FinishedAll();
@@ -104,7 +147,6 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         Particle *scatIso = new Particle(theTarget->Z, theTarget->A);
         Particle *fragment = new Particle(fZ, fA);
         Particle *residual = new Particle(theBeam->Z+theTarget->Z-fZ, theBeam->A+theTarget->A-fA);
-
         Material *front = new Material(theFront->Z, theFront->A, theFront->width, Unit2MatUnit(theFront->unit));
         Material *target = new Material(theTarget->Z, theTarget->A, theTarget->width, Unit2MatUnit(theTarget->unit));
         Material *back = new Material(theBack->Z, theBack->A, theBack->width/fabs(cos(Angle)), Unit2MatUnit(theBack->unit));
@@ -178,9 +220,14 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         if (theFront->is_present)
             E_beam = stopFrontB->Loss(E_beam, INTPOINTS);
 
-        double Ehalf = stopTargetB->Loss(E_beam, target->GetWidth(tUnit)/2., INTPOINTS);
-        double Ewhole = stopTargetB->Loss(E_beam, INTPOINTS);
-
+        double Ehalf, Ewhole;
+        if (haveCpro){
+            Ehalf = proCustom->Loss(E_beam, target->GetWidth(Material::Unit::mgcm2)/2., INTPOINTS); // The stopping power are in ug/cm^2
+            Ewhole = proCustom->Loss(E_beam, target->GetWidth(Material::Unit::mgcm2), INTPOINTS);
+        } else {
+            Ehalf = stopTargetB->Loss(E_beam, target->GetWidth(tUnit)/2., INTPOINTS);
+            Ewhole = stopTargetB->Loss(E_beam, INTPOINTS);
+        }
         double dEx = scat->FindMaxEx(Ewhole, Angle)/double(POINTS - 1);
 
         if ((Ehalf + get_Q_keV(theBeam->A, theBeam->Z, theTarget->A, theTarget->Z, fA, fZ)/1000.)<0){
@@ -214,12 +261,13 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         }
 
         QVector<double> Ex_tmp(POINTS), dE_tmp(POINTS), E_tmp(POINTS), E_err_tmp(POINTS), is_punch(POINTS);
+        //adouble Ex_tmp(POINTS), dE_tmp(POINTS), E_tmp(POINTS), E_err_tmp(POINTS), is_punch(POINTS);
 
         Ex.clear();
         dE.clear();
         E.clear();
 
-        double l;
+        /*double l;
         double m, dm, em;
         double n;
 
@@ -231,12 +279,20 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
             n = scat->EvaluateY(Ewhole, Angle, Ex_tmp[i]);
 
             if (Angle > PI/2.){
-                n = stopTargetF->Loss(n, target->GetWidth(tUnit)/fabs(cos(Angle)), INTPOINTS);
+                if (haveCfrag)
+                    n = fragCustom->Loss(n, target->GetWidth(Material::Unit::mgcm2)/fabs(cos(Angle)), INTPOINTS);
+                else
+                    n = stopTargetF->Loss(n, target->GetWidth(tUnit)/fabs(cos(Angle)), INTPOINTS);
             } else {
-                l = stopTargetF->Loss(l, target->GetWidth(tUnit)/fabs(cos(Angle)), INTPOINTS);
+                if (haveCfrag)
+                    l = fragCustom->Loss(l, target->GetWidth(Material::Unit::mgcm2)/fabs(cos(Angle)), INTPOINTS);
+                else
+                    l = stopTargetF->Loss(l, target->GetWidth(tUnit)/fabs(cos(Angle)), INTPOINTS);
             }
-
-            m = stopTargetF->Loss(m, target->GetWidth(tUnit)/fabs(2*cos(Angle)), INTPOINTS);
+            if (haveCfrag)
+                m = fragCustom->Loss(m, target->GetWidth(Material::Unit::mgcm2)/fabs(2*cos(Angle)), INTPOINTS);
+            else
+                m = stopTargetF->Loss(m, target->GetWidth(tUnit)/fabs(2*cos(Angle)), INTPOINTS);
 
             if (Angle > PI/2. && theFront->is_present){
                 l = stopFrontF->Loss(l, front->GetWidth(fUnit)/fabs(cos(Angle)), INTPOINTS);
@@ -267,7 +323,87 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
             is_punch[i] = em;
             if (em != em)
                 is_punch[i] = 1000;
+        }*/
+
+
+        adouble l(POINTS);
+        adouble m(POINTS), dm(POINTS), em(POINTS);
+        adouble n(POINTS);
+
+        for (int i = 0 ; i < POINTS ; ++i){
+            Ex_tmp[i] = i*dEx;
         }
+
+        for (int i = 0 ; i < POINTS ; ++i){
+            l[i] = scat->EvaluateY(E_beam, Angle, Ex_tmp[i]);
+            m[i] = scat->EvaluateY(Ehalf, Angle, Ex_tmp[i]);
+            n[i] = scat->EvaluateY(Ewhole, Angle, Ex_tmp[i]);
+        }
+
+        if (Angle > PI/2.){
+            if (haveCfrag){
+                for (int i = 0 ; i < POINTS ; ++i){
+                    n[i] = fragCustom->Loss(n[i], target->GetWidth(Material::Unit::mgcm2)/fabs(cos(Angle)), INTPOINTS);
+                }
+            } else {
+                for (int i = 0 ; i < POINTS ; ++i){
+                    n[i] = stopTargetF->Loss(n[i], target->GetWidth(tUnit)/fabs(cos(Angle)), INTPOINTS);
+                }
+            }
+        } else {
+            if (haveCfrag){
+                for (int i = 0 ; i < POINTS ; ++i)
+                    l[i] = fragCustom->Loss(l[i], target->GetWidth(Material::Unit::mgcm2)/fabs(cos(Angle)), INTPOINTS);
+            } else {
+                for (int i = 0 ; i < POINTS ; ++i)
+                    l[i] = stopTargetF->Loss(l[i], target->GetWidth(tUnit)/fabs(cos(Angle)), INTPOINTS);
+            }
+        }
+        if (haveCfrag){
+            for (int i = 0 ; i < POINTS ; ++i)
+                m[i] = fragCustom->Loss(m[i], target->GetWidth(Material::Unit::mgcm2)/fabs(2*cos(Angle)), INTPOINTS);
+        } else {
+            for (int i = 0 ; i < POINTS ; ++i)
+                m[i] = stopTargetF->Loss(m[i], target->GetWidth(tUnit)/fabs(2*cos(Angle)), INTPOINTS);
+        }
+
+        if (Angle > PI/2. && theFront->is_present){
+            for (int i = 0 ; i < POINTS ; ++i){
+                l[i] = stopFrontF->Loss(l[i], front->GetWidth(fUnit)/fabs(cos(Angle)), INTPOINTS);
+                m[i] = stopFrontF->Loss(m[i], front->GetWidth(fUnit)/fabs(cos(Angle)), INTPOINTS);
+                n[i] = stopFrontF->Loss(n[i], front->GetWidth(fUnit)/fabs(cos(Angle)), INTPOINTS);
+            }
+        } else if (theBack->is_present){
+            for (int i = 0 ; i < POINTS ; ++i){
+                l[i] = stopBack->Loss(l[i], INTPOINTS);
+                m[i] = stopBack->Loss(m[i], INTPOINTS);
+                n[i] = stopBack->Loss(n[i], INTPOINTS);
+            }
+        }
+
+        if (theTelescope->has_absorber){
+            for (int i = 0 ; i < POINTS ; ++i){
+                l[i] = stopAbsor->Loss(l[i], INTPOINTS);
+                m[i] = stopAbsor->Loss(m[i], INTPOINTS);
+                n[i] = stopAbsor->Loss(n[i], INTPOINTS);
+            }
+        }
+
+        for (int i = 0 ; i < POINTS ; ++i)
+            E_err_tmp[i] = sqrt(3*l[i]*l[i] + 3*n[i]*n[i] + 4*m[i]*m[i] - 2*n[i]*l[i] -4*m[i]*(l[i] + n[i]))/4.;
+
+        m = (l + 2*m + n)/4.;
+        for (int i = 0 ; i < POINTS ; ++i){
+            dm[i] = stopDE->Loss(m[i], INTPOINTS);
+            em[i] = stopE->Loss(dm[i], INTPOINTS);
+
+            dE_tmp[i] = m[i] - dm[i];
+            E_tmp[i] = dm[i] - em[i];
+            is_punch[i] = em[i];
+            if (em[i] != em[i])
+                is_punch[i] = 1000;
+        }
+
         QVector<double> is_punch2, E_err;
         int not_punch = 0;
         for (int i = 0 ; i < Ex_tmp.size() ; ++i){
@@ -307,6 +443,7 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
 
             delete[] x;
             delete[] y;
+            delete[] dx;
         }
 
 

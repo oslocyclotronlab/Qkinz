@@ -86,6 +86,44 @@ double BetheBlock::Loss(const double &E, const double &width, const int &points)
     return e;
 }
 
+adouble BetheBlock::Loss(adouble E, int points)
+{
+    double dx = pMaterial->GetWidth(Material::gcm2)/(points - 1);
+    adouble e = E;
+    adouble R1(E.size()), R2(E.size()), R3(E.size()), R4(E.size());
+    for (int i = 0 ; i < points ; ++i){
+        for (int j = 0 ; j < E.size() ; ++j){
+            R1[j] = dx*Evaluate(e[j]);
+            R2[j] = dx*Evaluate(e[j] + 0.5*R1[j]);
+            R3[j] = dx*Evaluate(e[j] + 0.5*R2[j]);
+            R4[j] = dx*Evaluate(e[j] + R3[j]);
+        }
+        e += (R1 + 0.5*(R2 + R3) + R4)/6.0;
+    }
+    e[e<0] = 0.0;
+    e[e!=e] = 0.0;
+    return e;
+}
+
+adouble BetheBlock::Loss(adouble E, double width, int points)
+{
+    double dx = width/(points - 1);
+    adouble e = E;
+    adouble R1(E.size()), R2(E.size()), R3(E.size()), R4(E.size());
+    for (int i = 0 ; i < points ; ++i){
+        for (int j = 0 ; j < E.size() ; ++j){
+            R1[j] = dx*Evaluate(e[j]);
+            R2[j] = dx*Evaluate(e[j] + 0.5*R1[j]);
+            R3[j] = dx*Evaluate(e[j] + 0.5*R2[j]);
+            R4[j] = dx*Evaluate(e[j] + R3[j]);
+        }
+        e += (R1 + 0.5*(R2 + R3) + R4)/6.0;
+    }
+    e[e<0] = 0.0;
+    e[e!=e] = 0.0;
+    return e;
+}
+
 double BetheBlock::calcDensityCorrection(const double &X) const
 {
     if (!densCorrSet)

@@ -3,12 +3,14 @@
 
 #include "ame2012_masses.h"
 #include "tablemakerhtml.h"
+#include "BatchReader.h"
 
 #include <iostream>
 #include <cmath>
 
-#include <QWebFrame>
+#include <QWebEngineView>
 #include <QFile>
+#include <QFileDialog>
 
 const double PI = acos(-1);
 
@@ -34,7 +36,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     worker = new Worker(&theBeam, &theTarget, &theFront, &theBack, &theTelescope);
+    //worker->setCustomTarget(new CustomPower("SKrC2D4_table2_ug.txt"), new CustomPower("SpC2D4_pstar_ug.txt"));
     worker->moveToThread(&workThread);
+
+    bReader = new BatchReader();
+    bReader->moveToThread(&batchThread);
+    //ui->pushButton->setHidden(true);
+
     qRegisterMetaType<QVector<double> >("QVector<double>");
     qRegisterMetaType<Fragment_t>("Fragment_t");
     connect(&workThread, &QThread::finished, worker, &QObject::deleteLater);
@@ -42,7 +50,15 @@ MainWindow::MainWindow(QWidget *parent)
     connect(worker, &Worker::ResultCurve, this, &MainWindow::CurveData);
     connect(worker, &Worker::ResultScatter, this, &MainWindow::ScatterData);
     connect(worker, &Worker::FinishedAll, this, &MainWindow::WorkFinished);
+    connect(worker, &Worker::curr_prog, runDialog, &RunDialog::progress);
     workThread.start();
+
+    qRegisterMetaType<QString>("QString");
+    connect(&batchThread, &QThread::finished, bReader, &QObject::deleteLater);
+    connect(this, &MainWindow::runBatchFile, bReader, &BatchReader::Start);
+    connect(bReader, &BatchReader::FinishedAll, this, &MainWindow::WorkFinished);
+    connect(bReader, &BatchReader::curr_prog, runDialog, &RunDialog::progress);
+    batchThread.start();
 
     ui->plotTab->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectAxes |
                                  QCP::iSelectLegend | QCP::iSelectPlottables);
@@ -72,6 +88,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->RunButton, SIGNAL(clicked()), this, SLOT(run()));
     connect(ui->ResetButton, SIGNAL(clicked()), this, SLOT(Reset_All()));
+    connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(BatchFile()));
 
     connect(setBeam_form, SIGNAL(DoRefresh()), this, SLOT(Refresh()));
     connect(setTarget_form, SIGNAL(DoRefresh()), this, SLOT(Refresh()));
@@ -170,6 +187,8 @@ MainWindow::~MainWindow()
     delete setTelescope_form;
     workThread.quit();
     workThread.wait();
+    batchThread.quit();
+    batchThread.wait();
 }
 
 
@@ -294,6 +313,7 @@ void MainWindow::CurveData(const QVector<double> &x, const QVector<double> &y, c
         ui->plotTab->addPlottable(makeCurve(x, y, QPen(QColor(0,0,0)), legend));
         table.setCoeff(coeff, TableMakerHTML::Alpha);
     }
+
     ui->plotTab->replot();
     ui->plotTab->rescaleAxes();
     ui->plotTab->show();
@@ -330,6 +350,7 @@ void MainWindow::ScatterData(const QVector<double> &x, const QVector<double> &dx
 
 void MainWindow::run()
 {
+    runDialog->restart_counter();
     runDialog->show();
 
     RemoveAllGraphs();
@@ -447,11 +468,9 @@ void MainWindow::on_actionExport_table_triggered()
 
     QString FilePath = SaveTabDialog->getSaveFileName(this, "Save table", QDir::homePath(), Filters, &DefaultFilter);
     if (FilePath.endsWith("pdf", Qt::CaseInsensitive)){
-        QPrinter printer(QPrinter::HighResolution);
-        printer.setOutputFileName(FilePath);
-        ui->webView->print(&printer);
+        ui->webView->page()->printToPdf(FilePath);
     } else if (FilePath.endsWith("html", Qt::CaseInsensitive)){
-        QString htmlCode = ui->webView->page()->currentFrame()->toHtml();
+        QString htmlCode = table.getHTMLCode();
         QFile file(FilePath);
         if (file.open(QIODevice::WriteOnly|QIODevice::Text)){
             QTextStream out(&file);
@@ -543,5 +562,21 @@ void MainWindow::on_toggle_Angle(bool)
     } else {
         ui->StripNumbr->setEnabled(true);
         ui->manAngleInput->setEnabled(false);
+    }
+}
+
+// This is an early implementation.
+// There are no garantee that the software is correct
+// and this is especialy true for this functionality.
+void MainWindow::BatchFile()
+{
+    QFileDialog *openBatchDialog = new QFileDialog(this);
+
+    QString filepath = openBatchDialog->getOpenFileName(this, "Choose batchfile", QDir::homePath());
+
+    if (!filepath.isEmpty()){
+        runDialog->restart_counter();
+        runDialog->show();
+        emit runBatchFile(filepath);
     }
 }

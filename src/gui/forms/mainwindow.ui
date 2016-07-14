@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1024</width>
-    <height>901</height>
+    <height>911</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -599,6 +599,13 @@
              </item>
             </layout>
            </item>
+           <item>
+            <widget class="QPushButton" name="pushButton">
+             <property name="text">
+              <string>Run batch file</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </item>
          <item>
@@ -642,7 +649,7 @@
          </attribute>
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="0" column="0">
-           <widget class="QWebView" name="webView" native="true">
+           <widget class="QWebEngineView" name="webView" native="true">
             <property name="url" stdset="0">
              <url>
               <string>about:blank</string>
@@ -774,15 +781,15 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>QWebView</class>
-   <extends>QWidget</extends>
-   <header>QtWebKitWidgets/QWebView</header>
-  </customwidget>
-  <customwidget>
    <class>QCustomPlot</class>
    <extends>QWidget</extends>
    <header>qcustomplot.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QWebEngineView</class>
+   <extends>QWidget</extends>
+   <header>qwebengineview.h</header>
   </customwidget>
  </customwidgets>
  <resources>

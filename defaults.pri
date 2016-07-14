@@ -4,7 +4,7 @@ INCLUDEPATH += $$PWD/src \
 		$$PWD/src/math/include \
 		$$PWD/src/matter/include \
 		$$PWD/src/support/include \
-		$$PWD/src/tables/include
+                $$PWD/src/tables/include \
 
 SRC_DIR = $$PWD
 

@@ -35,12 +35,14 @@ public:
     void setTarget(Target_t *target){ theTarget = target; }
     void setTelescope(Telescope_t *telescope){ theTelescope = telescope; }
 
+    void restart_counter();
 
 signals:
     void Finished();
 
 public slots:
     void startMovie();
+    void progress(double curr);
 
 private:
     Ui::RunDialog *ui;

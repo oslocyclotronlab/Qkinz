@@ -38,6 +38,24 @@ public:
      */
     double Loss(const double &E,        /*!< Initial energy of the incident particle in [MeV].  */
                 const int &points=1000  /*!< Number of integration points.                      */) const;
+
+    adouble Loss(adouble E, int points=1001);
+    adouble Loss(adouble E, double width, int points=1001);
+
+    //! Calculates energy after the reversed process.
+    /*! \return The energy before passing through
+     *  the material.
+     */
+    double Gain(const double &E,        /*!< Energy of the incident particle in [MeV] after material.   */
+                const int &points=1000  /*!< Number of integration points.                              */) const;
+
+    //! Calculates energy after the reversed process.
+    /*! \return The energy before passing through
+     *  the material.
+     */
+    double Gain(const double &E,        /*!< Energy of the incident particle in [MeV] after material.   */
+                const double &width,    /*!< Width of the target. Units depends on implementation.      */
+                const int &points=1000  /*!< Number of integration points.                              */) const;
 private:
 	//! Fucntion to calculate proton stopping power.
 	/*! \return the proton stopping power of protons in the material.

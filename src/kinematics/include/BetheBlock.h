@@ -31,11 +31,14 @@ public:
 	double Evaluate(const double &E	/*!< Energy of incident particle.	*/) const;
 
 	double Loss(const double &E,		/*!< Initial energy of the incident particle in [MeV].	*/
-                const int &points=1000	/*!< Number of integration points.						*/) const;
+                const int &points=1001	/*!< Number of integration points.						*/) const;
 
     double Loss(const double &E,
                 const double &width,
-                const int &points=1000) const;
+                const int &points=1001) const;
+
+    adouble Loss(adouble E, int points=1001);
+    adouble Loss(adouble E, double width, int points=1001);
 
 	//! Set density correction parameters (optional).
 	void setDensityCorr(const DensityCorr &densC)

@@ -2,6 +2,9 @@
 #define TYPES
 
 #include <QVector>
+#include <valarray>
+
+typedef std::valarray<double> adouble;
 
 //! List of avalible units.
 enum Unit_t {
