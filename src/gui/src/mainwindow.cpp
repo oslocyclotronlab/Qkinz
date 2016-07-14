@@ -56,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
     qRegisterMetaType<QString>("QString");
     connect(&batchThread, &QThread::finished, bReader, &QObject::deleteLater);
     connect(this, &MainWindow::runBatchFile, bReader, &BatchReader::Start);
-    connect(bReader, &BatchReader::FinishedAll, this, &MainWindow::WorkFinished);
+    connect(bReader, &BatchReader::FinishedAll, this, &MainWindow::finishBFile);
     connect(bReader, &BatchReader::curr_prog, runDialog, &RunDialog::progress);
     batchThread.start();
 
@@ -570,13 +570,27 @@ void MainWindow::on_toggle_Angle(bool)
 // and this is especialy true for this functionality.
 void MainWindow::BatchFile()
 {
+    batchFiles.clear();
+    currentBatch = 0;
     QFileDialog *openBatchDialog = new QFileDialog(this);
+    batchFiles = openBatchDialog->getOpenFileNames(this, "Choose batchfile", QDir::homePath());
 
-    QString filepath = openBatchDialog->getOpenFileName(this, "Choose batchfile", QDir::homePath());
 
-    if (!filepath.isEmpty()){
+    if (!batchFiles.isEmpty()){
         runDialog->restart_counter();
         runDialog->show();
-        emit runBatchFile(filepath);
+        emit runBatchFile(batchFiles.at(0));
+        currentBatch += 1;
+    }
+}
+
+void MainWindow::finishBFile()
+{
+    if ((currentBatch < batchFiles.length())){
+        emit runBatchFile(batchFiles.at(currentBatch));
+        currentBatch += 1;
+        runDialog->restart_counter();
+    } else {
+        WorkFinished();
     }
 }

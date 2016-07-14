@@ -58,6 +58,8 @@ public slots:
     //! Slot to indicate that the worker is finished with calculations.
     void WorkFinished();
 
+    void finishBFile();
+
 private slots:
     //! Slot for showing the change beam dialog.
     inline void showBeam()
@@ -203,6 +205,9 @@ private:
                         QVector<double> y,  /*!< y-values.              */
                         QVector<double> dy, /*!< Error of the y-values. */
                         QPen pen            /*!< Color of the points.   */);
+
+    QStringList batchFiles;
+    int currentBatch;
 };
 
 #endif // MAINWINDOW_H
