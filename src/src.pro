@@ -24,6 +24,7 @@ macx {
     QMAKE_CXXFLAGS += -std=c++11 -O3
     LIBS += -dead_strip
 }
+
 QMAKE_CXXFLAGS += -std=c++11
 
 SOURCES +=  gui/src/mainwindow.cpp \
