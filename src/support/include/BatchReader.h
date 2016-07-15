@@ -64,6 +64,9 @@ private:
 
     int angleIndices;
 
+    bool want_SiRi;
+    char dir_siri;
+
     CustomPower *tStopPro;
     CustomPower *tStopFrag;
     bool CustomPowerPro, CustomPowerFrag;

@@ -7,6 +7,8 @@
 #include <QVector>
 //#include <algorithm>
 
+const double PI = acos(-1);
+
 static size_t count_line(std::istream &is)
 {
     // skip when bad
@@ -44,13 +46,18 @@ BatchReader::BatchReader()
     , CustomPowerPro(false)
     , CustomPowerFrag(false)
     , angleIndices( 0 )
+    , want_SiRi( true )
+    , dir_siri( 'f' )
 {
 }
 
 void BatchReader::Start(const QString &batchFile)
 {
-    if (readBatchFile(batchFile.toStdString()))
+    if (readBatchFile(batchFile.toStdString())){
         Run();
+    } else {
+        // Add something that notifies the user that something went horrobly wrong.
+    }
 
     emit FinishedAll();
 }
@@ -73,26 +80,15 @@ void BatchReader::Run()
     double x;
     int i, j, k=0;
     QVector<double> coef(3);
-    outputData << "<angle> <a0> <a1> <a2> <chiSq>\n";
+    outputData << "<index> <a0> <a1> <a2> <chiSq>\n";
     size_t length = count_line(inputAngle);
-    while (inputAngle){
-        if (angleIndices == 0){
-            inputAngle >> x;
-            std::cout << "Running angle: " << x << std::endl;
-            if (worker->getCoeff(x, fragA, fragZ, coef)){
-                outputData << x << " ";
-                outputData << coef[0] << " ";
-                outputData << coef[1] << " ";
-                outputData << coef[2] << " ";
-                outputData << coef[3] << "\n";
-            } else {
-                outputData << x << " 0 0 0 0\n";
-            }
-        } else if (angleIndices == 1){
-            inputAngle >> i;
-            inputAngle >> x;
-            std::cout << "Running angle: " << x << std::endl;
-            if (worker->getCoeff(x, fragA, fragZ, coef)){
+    if (want_SiRi){
+        double angle;
+        for (int i = 0 ; i < 8 ; ++i){
+            angle = (i*2. + 40.)*PI/180.;
+            if (dir_siri == 'b')
+                angle = PI - angle;
+            if (worker->getCoeff(angle, fragA, fragZ, coef)){
                 outputData << i << " ";
                 outputData << coef[0] << " ";
                 outputData << coef[1] << " ";
@@ -101,22 +97,52 @@ void BatchReader::Run()
             } else {
                 outputData << i << " 0 0 0 0\n";
             }
-        } else if (angleIndices == 2){
-            inputAngle >> i >> j;
-            inputAngle >> x;
-            std::cout << "Running angle: " << x << std::endl;
-            if (worker->getCoeff(x, fragA, fragZ, coef)){
-                outputData << i << " " << j << " ";
-                outputData << coef[0] << " ";
-                outputData << coef[1] << " ";
-                outputData << coef[2] << " ";
-                outputData << coef[3] << "\n";
-            } else {
-                outputData << i << " " << j << " 0 0 0 0\n";
-            }
+            emit curr_prog(100*double(i+1)/8.);
         }
-        ++k;
-        emit curr_prog(100*double(k)/double(length));
+    } else {
+        while (inputAngle){
+            if (angleIndices == 0){
+                inputAngle >> x;
+                std::cout << "Running angle: " << x << std::endl;
+                if (worker->getCoeff(x, fragA, fragZ, coef)){
+                    outputData << x << " ";
+                    outputData << coef[0] << " ";
+                    outputData << coef[1] << " ";
+                    outputData << coef[2] << " ";
+                    outputData << coef[3] << "\n";
+                } else {
+                    outputData << x << " 0 0 0 0\n";
+                }
+            } else if (angleIndices == 1){
+                inputAngle >> i;
+                inputAngle >> x;
+                std::cout << "Running angle: " << x << std::endl;
+                if (worker->getCoeff(x, fragA, fragZ, coef)){
+                    outputData << i << " ";
+                    outputData << coef[0] << " ";
+                    outputData << coef[1] << " ";
+                    outputData << coef[2] << " ";
+                    outputData << coef[3] << "\n";
+                } else {
+                    outputData << i << " 0 0 0 0\n";
+                }
+            } else if (angleIndices == 2){
+                inputAngle >> i >> j;
+                inputAngle >> x;
+                std::cout << "Running angle: " << x << std::endl;
+                if (worker->getCoeff(x, fragA, fragZ, coef)){
+                    outputData << i << " " << j << " ";
+                    outputData << coef[0] << " ";
+                    outputData << coef[1] << " ";
+                    outputData << coef[2] << " ";
+                    outputData << coef[3] << "\n";
+                } else {
+                    outputData << i << " " << j << " 0 0 0 0\n";
+                }
+            }
+            ++k;
+            emit curr_prog(100*double(k)/double(length));
+        }
     }
     outputData.close();
     inputAngle.close();
@@ -213,9 +239,21 @@ bool BatchReader::next_command(const std::string &cmd)
         }
         return true;
     } else if (name == "angle"){
-        icmd >> angleIndices;
-        icmd >> anglefile;
-        return true;
+        std::string tmp;
+        icmd >> tmp;
+        if (tmp == "siri"){
+            icmd >> dir_siri;
+            want_SiRi = true;
+            if (dir_siri != 'f' || dir_siri != 'b'){
+                return false;
+            }
+            return true;
+        } else if (tmp == "custom"){
+            icmd >> angleIndices;
+            icmd >> anglefile;
+            want_SiRi = false;
+            return true;
+        }
     } else {
         return false;
     }
