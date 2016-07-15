@@ -1,26 +1,26 @@
 language: cpp
 
 os:
-- linux
+#- linux
 - osx
 
 compile:
 - g++
 
 sudo: required
-dist: trusty
+#dist: trusty
 
-addons:
-  apt:
-    sources:
-    - ubuntu-sdk-team
-    packages:
-    - qtdeclarative5-dev
-    - qtbase5-dev
-    - libqt5webkit5-dev
-    - libsqlite3-dev
-    - qt5-default
-    - qttools5-dev-tools
+#addons:
+#  apt:
+#    sources:
+#    - ubuntu-sdk-team
+#    packages:
+#    - qtdeclarative5-dev
+#    - qtbase5-dev
+#    - libqt5webkit5-dev
+#    - libsqlite3-dev
+#    - qt5-default
+#    - qttools5-dev-tools
 before_install:
 - scripts/travis_osx.sh
 script:
