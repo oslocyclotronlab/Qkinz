@@ -100,9 +100,17 @@ adouble BetheBlock::Loss(adouble E, int points)
         }
         e += (R1 + 0.5*(R2 + R3) + R4)/6.0;
     }
+#if __linux
+    for (int i = 0 ; i < e.size() ; ++i){
+	    if (e[i] < 0 || e[i] != e[i]){
+		    e[i] = 0.0;
+	    }
+    }
+#else
     e[e<0] = 0.0;
     e[e!=e] = 0.0;
     return e;
+#endif // __linux
 }
 
 adouble BetheBlock::Loss(adouble E, double width, int points)
@@ -119,9 +127,18 @@ adouble BetheBlock::Loss(adouble E, double width, int points)
         }
         e += (R1 + 0.5*(R2 + R3) + R4)/6.0;
     }
+
+#if __linux
+    for (int i = 0 ; i < e.size() ; ++i){
+	    if (e[i] < 0 || e[i] != e[i]){
+		    e[i] = 0.0;
+	    }
+    }
+#else
     e[e<0] = 0.0;
     e[e!=e] = 0.0;
     return e;
+#endif // __linux
 }
 
 double BetheBlock::calcDensityCorrection(const double &X) const
