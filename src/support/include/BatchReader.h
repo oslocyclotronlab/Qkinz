@@ -6,7 +6,7 @@
 #include <QString>
 #include <string>
 #include "types.h"
-#include "Worker.h"
+#include "worker.h"
 #include "CustomPower.h"
 
 class BatchReader : public QObject
