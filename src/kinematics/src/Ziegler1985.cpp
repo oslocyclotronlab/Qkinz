@@ -106,7 +106,7 @@ adouble Ziegler1985::Loss(adouble E, int points)
         }
         e += (R1 + 0.5*(R2 + R3) + R4)/6.0;
     }
-    e[e<0] = 0.0;
+    e[e<0.0] = 0.0;
     e[e!=e] = 0.0;
     return e/1e3;
 }
@@ -125,7 +125,7 @@ adouble Ziegler1985::Loss(adouble E, double width, int points)
         }
         e += (R1 + 0.5*(R2 + R3) + R4)/6.0;
     }
-    e[e<0] = 0.0;
+    e[e<0.0] = 0.0;
     e[e!=e] = 0.0;
     return e/1e3;
 }

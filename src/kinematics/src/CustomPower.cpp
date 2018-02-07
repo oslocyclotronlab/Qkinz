@@ -99,7 +99,7 @@ adouble CustomPower::Loss(adouble E, double width, int points)
         }
         e += (R1 + 0.5*(R2 + R3) + R4)/6.0;
     }
-    e[e<0] = 0.0;
+    e[e<0.0] = 0.0;
     e[e!=e] = 0.0;
     return e;
 }
