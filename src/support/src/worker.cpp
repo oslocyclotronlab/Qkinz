@@ -27,6 +27,29 @@
 const double PI = acos(-1);
 const double ANG_FWD = 47*PI/180.;
 
+#if __linux
+static adouble operator*(const int &numb, const adouble &val)
+{
+    adouble r(val.size());
+    
+    for (int i = 0 ; i < val.size() ; ++i){
+        r[i] = numb*val[i];
+    }
+    return r;
+}
+
+static adouble operator*(const double &numb, const adouble &val)
+{
+    adouble r(val.size());
+    
+    for (int i = 0 ; i < val.size() ; ++i){
+        r[i] = numb*val[i];
+    }
+    return r;
+}
+
+#endif // __linux
+
 static Material::Unit Unit2MatUnit(const Unit_t &unit)
 {
     if (unit == mgcm2)

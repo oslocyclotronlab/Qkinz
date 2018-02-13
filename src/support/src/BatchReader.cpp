@@ -79,7 +79,7 @@ void BatchReader::Run()
     std::ofstream outputData(outfile.c_str());
     double x;
     int i, j, k=0;
-    QVector<double> coef(3);
+    QVector<double> coef(4);
     outputData << "<index> <a0> <a1> <a2> <chiSq>\n";
     size_t length = count_line(inputAngle);
     if (want_SiRi){
@@ -244,7 +244,7 @@ bool BatchReader::next_command(const std::string &cmd)
         if (tmp == "siri"){
             icmd >> dir_siri;
             want_SiRi = true;
-            if (dir_siri != 'f' || dir_siri != 'b'){
+            if (dir_siri != 'f' && dir_siri != 'b'){
                 return false;
             }
             return true;
