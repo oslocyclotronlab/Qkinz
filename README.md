@@ -1,7 +1,7 @@
 # Qkinz [![Build Status](https://travis-ci.org/vetlewi/Qkinz.svg?branch=master)](https://travis-ci.org/vetlewi/Qkinz)
  Click link to get to the Zenodo website, where you will find the DOI for your version. This is the lastest DOI: [![DOI](https://zenodo.org/badge/46925837.svg)](https://zenodo.org/badge/latestdoi/46925837)
 
-Application for simulating the kinematics in Oslo Cyclotron Laboratory. The application uses stopping powers from J.F. Ziegler, J.P. Biersack, and U. Littmark, *The Stopping and Range of Ions in Solids*, Pergamon Press, New York (1985) for materials $Z\leq92$. Stopping powers are calculated from the Bethe-Block formula when $Z>92$. Masses used in the calculations are taken from the Atomic Mass Evaluation 2012 by M. Wang, G. Audi, A. H. Wapstra, F. G. Kondev,M. MacCormick, X. Xu, and B. Pfeiffer, Chinese Physics **C36**, 1603 (2012) [doi:10.1088/1674-1137/36/12/003](dx.doi.org/10.1088/1674-1137/36/12/003). Parts of the graphical component of the software is based on [**QCustomPlot**](http://qcustomplot.com/index.php/introduction).
+Application for simulating the kinematics in Oslo Cyclotron Laboratory. The application uses stopping powers from J.F. Ziegler, J.P. Biersack, and U. Littmark, *The Stopping and Range of Ions in Solids*, Pergamon Press, New York (1985) for materials Z<93. Stopping powers are calculated from the Bethe-Block formula when Z>92. Masses used in the calculations are taken from the Atomic Mass Evaluation 2012 by M. Wang, G. Audi, A. H. Wapstra, F. G. Kondev,M. MacCormick, X. Xu, and B. Pfeiffer, Chinese Physics **C36**, 1603 (2012) [doi:10.1088/1674-1137/36/12/003](dx.doi.org/10.1088/1674-1137/36/12/003). Parts of the graphical component of the software is based on [**QCustomPlot**](http://qcustomplot.com/index.php/introduction).
 
 ![Screenshot](https://raw.githubusercontent.com/oslocyclotronlab/Qkinz/master/screenshot/Screenshot.png)
 
@@ -16,18 +16,22 @@ The software is based on the [**Qt SDK**](http://www.qt.io/). Currently it has o
 Download
 ----
 #### OS X/MacOS:
-The latest version for OS X can be [**downloaded here**](https://github.com/vetlewi/Qkinz/releases)(compatible with OS X 10.9 and later).
+~~The latest version for OS X can be [**downloaded here**](https://github.com/vetlewi/Qkinz/releases)(compatible with OS X 10.9 and later).~~
+
+Binaries for OS X is [**downloaded here**](https://github.com/vetlewi/Qkinz/releases) (compatibility may vary), but may not be up to date, for the most **recent** version you'll have to built it yourself.
 
 #### Ubuntu:
-The easiest way to install for ubuntu is to run the following lines in the command-line:
+~~The easiest way to install for ubuntu is to run the following lines in the command-line:~~
 
-`sudo add-apt-repository ppa:v-w-ingeberg/ppa`
+~~`sudo add-apt-repository ppa:v-w-ingeberg/ppa`~~
 
-`sudo apt-get update`
+~~`sudo apt-get update`~~
 
-`sudo apt-get install qkinz`
+~~`sudo apt-get install qkinz`~~
 
-Binaries can also be downloaded from [**here**](https://launchpad.net/~v-w-ingeberg/+archive/ubuntu/ppa/+packages).
+~~Binaries can also be downloaded from [**here**](https://launchpad.net/~v-w-ingeberg/+archive/ubuntu/ppa/+packages).~~
+
+You have to build it yourself, see [Build](https://github.com/oslocyclotronlab/Qkinz#build).
 
 #### Windows:
 Currently, no binaries are provided but can be build from source.
