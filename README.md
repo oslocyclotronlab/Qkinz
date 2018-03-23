@@ -1,6 +1,4 @@
-# Qkinz [![Build Status](https://travis-ci.org/vetlewi/Qkinz.svg?branch=master)](https://travis-ci.org/vetlewi/Qkinz)
- Click link to get to the Zenodo website, where you will find the DOI for your version. This is the lastest DOI: [![DOI](https://zenodo.org/badge/46925837.svg)](https://zenodo.org/badge/latestdoi/46925837)
-
+# Qkinz [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1206099.svg)](https://doi.org/10.5281/zenodo.1206099)
 Application for simulating the kinematics in Oslo Cyclotron Laboratory. The application uses stopping powers from J.F. Ziegler, J.P. Biersack, and U. Littmark, *The Stopping and Range of Ions in Solids*, Pergamon Press, New York (1985) for materials Z<93. Stopping powers are calculated from the Bethe-Block formula when Z>92. Masses used in the calculations are taken from the Atomic Mass Evaluation 2012 by M. Wang, G. Audi, A. H. Wapstra, F. G. Kondev,M. MacCormick, X. Xu, and B. Pfeiffer, Chinese Physics **C36**, 1603 (2012) [doi:10.1088/1674-1137/36/12/003](dx.doi.org/10.1088/1674-1137/36/12/003). Parts of the graphical component of the software is based on [**QCustomPlot**](http://qcustomplot.com/index.php/introduction).
 
 ![Screenshot](https://raw.githubusercontent.com/oslocyclotronlab/Qkinz/master/screenshot/Screenshot.png)
