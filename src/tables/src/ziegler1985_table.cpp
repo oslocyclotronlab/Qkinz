@@ -33,7 +33,7 @@ int Get_maxZ(){
 
 inline static bool in_table(const int &z) {
     if ( (z < Get_minZ()) || (z > Get_maxZ()) ){
-        std::cerr << "Warning: Element Z=" <<  z << " is not included in the Ziegler table." << std::endl;
+        std::cerr << "Warning: Element Z=" <<  z << " is not included in the Ziegler table, program will use Bethe-Block instead." << std::endl;
         return false;
     }
     return true;
