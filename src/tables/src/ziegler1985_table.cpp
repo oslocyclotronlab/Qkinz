@@ -31,49 +31,51 @@ int Get_maxZ(){
 	return 92;
 }
 
-double Get_lfctr(int z){
+inline static bool in_table(const int &z) {
     if ( (z < Get_minZ()) || (z > Get_maxZ()) ){
-		std::cerr << "Element not in table." << std::endl;
+        std::cerr << "Warning: Element Z=" <<  z << " is not included in the Ziegler table." << std::endl;
+        return false;
+    }
+    return true;
+}
+
+double Get_lfctr(int z){
+    if ( !in_table(z) ){
         return -1;
 	}
 	return p1[z - 1][7];
 }
 
 double Get_rho(int z){
-    if ( (z < Get_minZ()) || (z > Get_maxZ()) ){
-		std::cerr << "Element not in table." << std::endl;
+    if ( !in_table(z) ){
         return -1;
-	}
+    }
 	return p1[z-1][4];
 }
 
 double Get_atrho(int z){
-    if ( (z < Get_minZ()) || (z > Get_maxZ()) ){
-        std::cerr << "Element not in table." << std::endl;
+    if ( !in_table(z) ){
         return -1;
-	}
+    }
 	return p1[z-1][5]*1e22;
 }
 
 double Get_vfermi(int z){
-    if ( (z < Get_minZ()) || (z > Get_maxZ()) ){
-		std::cerr << "Element not in table." << std::endl;
+    if ( !in_table(z) ){
         return -1;
-	}
+    }
 	return p1[z-1][6];
 }
 
 double Get_mm2(int z){
-    if ( (z < Get_minZ()) || (z > Get_maxZ()) ){
-        std::cout << "Element not in table." << std::endl;
+    if ( !in_table(z) ){
         return -1;
     }
     return p1[z-1][1];
 }
 
 bool Get_pcoef(int z, double *data){
-    if ( (z < Get_minZ()) || (z > Get_maxZ()) ){
-		std::cout << "Element not in table." << std::endl;
+    if ( !in_table(z) ){
         return false;
     }
 	const double * pcoef = p2[z-1];
