@@ -187,6 +187,9 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
             stopTargetB = new BetheBlock(target, beam);
             stopTargetF = new BetheBlock(target, fragment);
             tUnit = Material::gcm2;
+            std::cout << "Warning: Target Z= " << theTarget->Z;
+            std::cout << ", Ziegler stopping-power only supports elements up to Z=92. Using Bethe-Block formula for the stopping power.";
+            std::cout << std::endl;
         } else {
             stopTargetB = new Ziegler1985(target, beam);
             stopTargetF = new Ziegler1985(target, fragment);
@@ -201,6 +204,9 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
             stopFrontB = new BetheBlock(front, beam);
             stopFrontF = new BetheBlock(front, fragment);
             fUnit = Material::gcm2;
+            std::cout << "Warning: Front coating Z= " << theFront->Z;
+            std::cout << ", Ziegler stopping-power only supports elements up to Z=92. Using Bethe-Block formula for the stopping power.";
+            std::cout << std::endl;
         } else {
             stopFrontB = new Ziegler1985(front, beam);
             stopFrontF = new Ziegler1985(front, fragment);
@@ -211,6 +217,9 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         if (theBack->Z > 92){
             stopBack = new BetheBlock(back, fragment);
             bUnit = Material::gcm2;
+            std::cout << "Warning: Back coating Z= " << theBack->Z;
+            std::cout << ", Ziegler stopping-power only supports elements up to Z=92. Using Bethe-Block formula for the stopping power.";
+            std::cout << std::endl;
         } else {
             stopBack = new Ziegler1985(back, fragment);
             bUnit = Material::um;
@@ -220,6 +229,9 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         StoppingPower *stopAbsor;
         if (theTelescope->Absorber.Z > 92){
             stopAbsor = new BetheBlock(abs, fragment);
+            std::cout << "Warning: Absorber Z= " << theTelescope->Absorber.Z;
+            std::cout << ", Ziegler stopping-power only supports elements up to Z=92. Using Bethe-Block formula for the stopping power.";
+            std::cout << std::endl;
         } else {
             stopAbsor = new Ziegler1985(abs, fragment);
         }
@@ -228,6 +240,9 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         StoppingPower *stopDE;
         if (theTelescope->dEdetector.Z > 92){
             stopDE = new BetheBlock(dEdet, fragment);
+            std::cout << "Warning: dE detector Z= " << theTelescope->dEdetector.Z;
+            std::cout << ", Ziegler stopping-power only supports elements up to Z=92. Using Bethe-Block formula for the stopping power.";
+            std::cout << std::endl;
         } else {
             stopDE = new Ziegler1985(dEdet, fragment);
         }
@@ -236,6 +251,9 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         StoppingPower *stopE;
         if (theTelescope->Edetector.Z > 92){
             stopE = new BetheBlock(Edet, fragment);
+            std::cout << "Warning: E detector Z= " << theTelescope->Edetector.Z;
+            std::cout << ", Ziegler stopping-power only supports elements up to Z=92. Using Bethe-Block formula for the stopping power.";
+            std::cout << std::endl;
         } else {
             stopE = new Ziegler1985(Edet, fragment);
         }

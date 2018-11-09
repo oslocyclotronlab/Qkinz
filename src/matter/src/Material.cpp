@@ -19,7 +19,7 @@ Material::Material(const int &_Z, const int &_A, const double &_width, Unit _cur
     , currUnit( _currUnit )
 {	//! Variable telling if retrival of variable was successful or not.
 	if (!retriveVariables()){
-		std::cerr << "Error retriving data. Shure element no. " << Z << " excists?" << std::endl;
+        std::cerr << "Error retriving data. Shure element no. " << Z << " excists?" << std::endl;
 		retrive = false;
 	} else
 		retrive = true;

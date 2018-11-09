@@ -10,9 +10,11 @@
 #include "RelScatter.h"
 #include "StoppingPower.h"
 #include "Ziegler1985.h"
+#include "BetheBlock.h"
 #include "ame2012_masses.h"
 
 #include <cmath>
+#include <iostream>
 
 RunSystem::RunSystem(Particle *pbeam,
                      Particle *pscatIso,
@@ -50,11 +52,50 @@ RunSystem::~RunSystem()
 int RunSystem::Run(const double &Energy, const double &Angle) const
 {
     RelScatter  *scat = new RelScatter(beam, scatIso, fragment, residual);
-    Ziegler1985 *stopTargetB = new Ziegler1985(target, beam);
-    Ziegler1985 *stopTargetF = new Ziegler1985(target, fragment);
-    Ziegler1985 *stopAbsor = new Ziegler1985(absorber, fragment);
-    Ziegler1985 *stopDE = new Ziegler1985(dEmaterial, fragment);
-    Ziegler1985 *stopE = new Ziegler1985(Ematerial, fragment);
+    StoppingPower *stopTargetB;
+    StoppingPower *stopTargetF;
+    StoppingPower *stopAbsor;
+    StoppingPower *stopDE;
+    StoppingPower *stopE;
+
+    if ( target->GetZ() <= 92 ){
+        stopTargetB = new Ziegler1985(target, beam);
+        stopTargetF = new Ziegler1985(target, fragment);
+    } else {
+        stopTargetB = new BetheBlock(target, beam);
+        stopTargetF = new BetheBlock(target, fragment);
+        std::cout << "Warning: Target Z= " << target->GetZ();
+        std::cout << ", Ziegler stopping-power only supports elements up to Z=92. Using Bethe-Block formula for the stopping power.";
+        std::cout << std::endl;
+    }
+
+    if ( absorber->GetZ() <= 92 ){
+        stopAbsor = new Ziegler1985(absorber, fragment);
+    } else {
+        stopAbsor = new BetheBlock(absorber, fragment);
+        std::cout << "Warning: Absorber Z= " << absorber->GetZ();
+        std::cout << ", Ziegler stopping-power only supports elements up to Z=92. Using Bethe-Block formula for the stopping power.";
+        std::cout << std::endl;
+    }
+
+    if ( dEmaterial->GetZ() <= 92 ){
+        stopDE = new Ziegler1985(dEmaterial, fragment);
+    } else {
+        stopDE = new BetheBlock(dEmaterial, fragment);
+        std::cout << "Warning: dE detector Z= " << dEmaterial->GetZ();
+        std::cout << ", Ziegler stopping-power only supports elements up to Z=92. Using Bethe-Block formula for the stopping power.";
+        std::cout << std::endl;
+
+    }
+
+    if ( Ematerial->GetZ() <= 92 ){
+        stopE = new Ziegler1985(Ematerial, fragment);
+    } else {
+        stopE = new BetheBlock(Ematerial, fragment);
+        std::cout << "Warning: E detector Z= " << Ematerial->GetZ();
+        std::cout << ", Ziegler stopping-power only supports elements up to Z=92. Using Bethe-Block formula for the stopping power.";
+        std::cout << std::endl;
+    }
 
     double Ehalf = stopTargetB->Loss(Energy, target->GetWidth(), INTPOINTS);
     double Ehole = stopTargetB->Loss(Energy, INTPOINTS);

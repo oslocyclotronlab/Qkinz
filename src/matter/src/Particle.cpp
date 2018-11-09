@@ -15,7 +15,7 @@ Particle::Particle(const int &_Z, const int &_A)
 {
 	Ziegler = retriveVariables();
 	if (!Ziegler)
-		std::cerr << "Error retriving variables. Shure element(A,Z) (" << A << ", " << Z << ") is a valid isotope?" << std::endl;
+        std::cerr << "Warning: Unable to retrive parameters for Ziegler stopping-power. Shure element(A,Z) (" << A << ", " << Z << ") is a valid isotope? Falling back on Bethe-Block." << std::endl;
 }
 
 Particle::Particle(const Particle &particle)
@@ -35,7 +35,7 @@ void Particle::setParticle(const int &_Z, const int &_A)
 	A = _A;
 	Ziegler = retriveVariables();
 	if (!Ziegler)
-		std::cerr << "Error retriving variables. Shure element(A,Z) (" << A << ", " << Z << ") is a valid isotope?" << std::endl;
+        std::cerr << "Warning: Unable to retrive parameters for Ziegler stopping-power. Shure element(A,Z) (" << A << ", " << Z << ") is a valid isotope? Falling back on Bethe-Block." << std::endl;
 }
 
 bool Particle::retriveVariables()
