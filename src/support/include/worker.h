@@ -32,12 +32,20 @@ public:
 public slots:
 
     //! Slot to indicate that the class have to perform the calculations.
-    void Run(const double &Angle,   /*!< Scattering angle.                  */
-             const bool &p,         /*!< Calculate for proton fragment.     */
-             const bool &d,         /*!< Calculate for deutron fragment.    */
-             const bool &t,         /*!< Calculate for triton fragment.     */
-             const bool &h3,        /*!< Calculate for Helium-3 fragment.   */
-             const bool &a          /*!< Calculate for alpha fragment.      */);
+    //void Run(const double &Angle,   /*!< Scattering angle.                  */
+    //         const bool &p,         /*!< Calculate for proton fragment.     */
+    //         const bool &d,         /*!< Calculate for deutron fragment.    */
+    //         const bool &t,         /*!< Calculate for triton fragment.     */
+    //         const bool &h3,        /*!< Calculate for Helium-3 fragment.   */
+    //         const bool &a          /*!< Calculate for alpha fragment.      */);
+
+    void Run(const double &Angle,    /*!< Scattering angle.                  */
+             const double &incAngle, /*!< Incident angle on telescope.       */
+             const bool &p,          /*!< Calculate for proton fragment.     */
+             const bool &d,          /*!< Calculate for deutron fragment.    */
+             const bool &t,          /*!< Calculate for triton fragment.     */
+             const bool &h3,         /*!< Calculate for Helium-3 fragment.   */
+             const bool &a           /*!< Calculate for alpha fragment.      */);
 
 signals:
 
@@ -91,6 +99,18 @@ private:
                const int &fA,           /*!< Mass number of the fragment.           */
                const int &fZ            /*!< Element number of the framgent.        */);
 
+    //! Function to calculate using continious excitation energy.
+    /*! \return true if reaction possible. false otherwise.
+     */
+    bool Curve(QVector<double> &Ex,     /*!< Excitation energy.                     */
+               QVector<double> &dE,     /*!< Energy deposited in thin detector.     */
+               QVector<double> &E,      /*!< Energy deposited in thick detector.    */
+               QVector<double> &coeff,  /*!< Fit of the data.                       */
+               const double &Angle,     /*!< Scattering angle.                      */
+               const double &incAngle,  /*!< Incident angle on telescope.           */
+               const int &fA,           /*!< Mass number of the fragment.           */
+               const int &fZ            /*!< Element number of the framgent.        */);
+
     //! Function to calculate using known states in the residual nucleus.
     /*! \return true if reaction possible. false otherwise.
      */
@@ -100,6 +120,19 @@ private:
                QVector<double> &delta_dE,   /*!< Uncertainty in thin detector.  */
                QVector<double> &delta_E,    /*!< Uncertainty in thick detector. */
                const double &Angle,         /*!< Scattering angle.              */
+               const int &fA,               /*!< Mass number of fragment.       */
+               const int &fZ                /*!< Element number of fragment.    */);
+
+    //! Function to calculate using known states in the residual nucleus.
+    /*! \return true if reaction possible. false otherwise.
+     */
+    bool Known(QVector<double> &Ex,         /*!< Excitation energy.             */
+               QVector<double> &dE,         /*!< Energy in thin detector.       */
+               QVector<double> &E,          /*!< Energy in thick detector.      */
+               QVector<double> &delta_dE,   /*!< Uncertainty in thin detector.  */
+               QVector<double> &delta_E,    /*!< Uncertainty in thick detector. */
+               const double &Angle,         /*!< Scattering angle.              */
+               const double &incAngle,      /*!< Incident angle on telescope.   */
                const int &fA,               /*!< Mass number of fragment.       */
                const int &fZ                /*!< Element number of fragment.    */);
 

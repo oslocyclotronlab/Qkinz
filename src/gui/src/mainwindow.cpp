@@ -96,8 +96,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(setTelescope_form, SIGNAL(DoRefresh()), this, SLOT(Refresh()));
 
     connect(ui->actionClose, SIGNAL(triggered(bool)), this, SLOT(close()));
-
-    connect(ui->manAngle, SIGNAL(toggled(bool)), this, SLOT(on_toggle_Angle(bool)));
+    connect(ui->StripNumbr, SIGNAL(valueChanged(int)), this, SLOT(strip_changed(int)));
+    connect(ui->FwdAngRButton, SIGNAL(toggled(bool)), this, SLOT(toggle_Angle(bool)));
+    connect(ui->BwdAngRButton, SIGNAL(toggled(bool)), this, SLOT(toggle_Angle(bool)));
+    connect(ui->manAngle, SIGNAL(toggled(bool)), this, SLOT(toggle_Angle(bool)));
 
     // Setting default values. Should be done from saved file?
     theBeam.A = 1;
@@ -134,6 +136,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->StripNumbr->setEnabled(true);
     ui->manAngleInput->setEnabled(false);
+    ui->incAngleInput->setEnabled(false);
+    double incAngle = ui->StripNumbr->value() * 2 - 7;
+    double angle = 47 + incAngle;
+    if ( ui->BwdAngRButton->isChecked() )
+        angle = 180. - angle;
+    ui->manAngleInput->setValue(angle);
+    ui->incAngleInput->setValue(fabs(incAngle));
 
     Refresh();
 }
@@ -173,6 +182,14 @@ void MainWindow::Reset_All()
     theTelescope.Absorber.unit = um;
     ui->StripNumbr->setEnabled(true);
     ui->manAngleInput->setEnabled(false);
+    ui->incAngleInput->setEnabled(false);
+
+    double incAngle = ui->StripNumbr->value() * 2 - 7;
+    double angle = 47 + incAngle;
+    if ( ui->BwdAngRButton->isChecked() )
+        angle = 180. - angle;
+    ui->manAngleInput->setValue(angle);
+    ui->incAngleInput->setValue(fabs(incAngle));
 
     RemoveAllGraphs();
     Refresh();
@@ -356,17 +373,20 @@ void MainWindow::run()
     RemoveAllGraphs();
     table.Reset();
     double angle;
+    double incAngle;
 
     if (ui->manAngle->isChecked()){
         angle = ui->manAngleInput->value()*PI/180.;
+        incAngle = ui->incAngleInput->value()*PI/180.;
     } else {
-        angle = (ui->StripNumbr->value()*2 + 40)*PI/180;
+        incAngle = (2*ui->StripNumbr->value() - 7)*PI/180;
+        angle = 47.0*PI/180 + incAngle;
         if (ui->BwdAngRButton->isChecked()){
             angle = PI - angle;
         }
     }
 
-    emit operate(angle, ui->protons->isChecked(), ui->deutrons->isChecked(), ui->tritons->isChecked(), ui->He3s->isChecked(), ui->alphas->isChecked());
+    emit operate(angle, incAngle, ui->protons->isChecked(), ui->deutrons->isChecked(), ui->tritons->isChecked(), ui->He3s->isChecked(), ui->alphas->isChecked());
 }
 
 void MainWindow::WorkFinished()
@@ -554,15 +574,31 @@ void MainWindow::on_actionAbout_QCustomPlot_triggered()
     file.close();
 }
 
-void MainWindow::on_toggle_Angle(bool)
+void MainWindow::strip_changed(int)
+{
+    double incAngle = 2*ui->StripNumbr->value() - 7;
+    double angle = 47.0 - incAngle;
+    if ( ui->BwdAngRButton->isChecked() )
+        angle = 180. - angle;
+    ui->manAngleInput->setValue(angle);
+    ui->incAngleInput->setValue(fabs(incAngle));
+}
+
+void MainWindow::toggle_Angle(bool)
 {
     if (ui->manAngle->isChecked()){
         ui->StripNumbr->setDisabled(true);
         ui->manAngleInput->setEnabled(true);
+        ui->incAngleInput->setEnabled(true);
     } else {
         ui->StripNumbr->setEnabled(true);
         ui->manAngleInput->setEnabled(false);
+        ui->incAngleInput->setEnabled(false);
     }
+    if (ui->BwdAngRButton->isChecked()){
+        strip_changed(0);
+    }
+
 }
 
 // This is an early implementation.
