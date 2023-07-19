@@ -10,8 +10,8 @@ RCC_DIR = $$BUILDDIR/tests
 UI_DIR = $$BUILDDIR/tests
 
 macx {
-    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.9
-    QMAKE_CXXFLAGS += -std=c++11 #-O3
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.15
+    QMAKE_CXXFLAGS += -std=c++20 #-O3
     LIBS += -dead_strip  #-stdlib=libc++
     #ICON = ../resources/media/Qkinz.icns
 }

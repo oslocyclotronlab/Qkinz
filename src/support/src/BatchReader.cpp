@@ -17,7 +17,7 @@ static size_t count_line(std::istream &is)
     std::istream::iostate state_backup = is.rdstate();
     // clear state
     is.clear();
-    std::istream::streampos pos_backup = is.tellg();
+    auto pos_backup = is.tellg();
 
     is.seekg(0);
     size_t line_cnt;

@@ -466,6 +466,30 @@
             </layout>
            </item>
            <item>
+            <layout class="QHBoxLayout" name="LayoutManualInc">
+             <item>
+              <widget class="QLabel" name="incAngleLabel">
+               <property name="text">
+                <string>Incident angle:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDoubleSpinBox" name="incAngleInput">
+               <property name="minimum">
+                <double>0.000000000000000</double>
+               </property>
+               <property name="maximum">
+                <double>180.000000000000000</double>
+               </property>
+               <property name="value">
+                <double>0.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
             <layout class="QHBoxLayout" name="horizontalLayout">
              <item>
               <layout class="QVBoxLayout" name="verticalLayout">

@@ -36,7 +36,8 @@ public:
     ~MainWindow();
 
 signals:
-    void operate(const double &Angle, const bool &p, const bool &d, const bool &t, const bool &h3, const bool &a);
+    //void operate(const double &Angle, const bool &p, const bool &d, const bool &t, const bool &h3, const bool &a);
+    void operate(const double &Angle, const double &incAngle, const bool &p, const bool &d, const bool &t, const bool &h3, const bool &a);
     void runBatchFile(QString batchfile);
 
 public slots:
@@ -135,8 +136,11 @@ private slots:
     //! Show the about QCustomPlot dialog.
     void on_actionAbout_QCustomPlot_triggered();
 
+    //! Strip number SpinButton is clicked.
+    void strip_changed(int);
+
     //! Angle ratio button is toggled.
-    void on_toggle_Angle(bool);
+    void toggle_Angle(bool);
 
 private:
     //! The ui of the window.
