@@ -18,7 +18,8 @@ public:
         Deutron,    //! If deutron.
         Triton,     //! If Triton.
         Helium3,    //! If Helium-3.
-        Alpha       //! If Alpha.
+        Alpha,      //! If Alpha.
+        Other       //! If Other.
     };
 
     //! Constructor.
@@ -46,6 +47,9 @@ public:
                  QVector<double> E,     /*!< Energy deposited in E detector.                    */
                  QVector<double> d_E,   /*!< Uncertainty in energy deposited in E detector.     */
                  Particle_t what        /*!< Which particle.                                    */);
+
+    //! Set the raw curve data.
+    void setCurve(QVector<double> ex, QVector<double> x, QVector<double> y, Particle_t what);
 
     //! Set the coefficients to the fitted Ex(e+de) curve.
     void setCoeff(QVector<double> Coeff,    /*!< Vector containing the three coefficients.  */
@@ -78,11 +82,19 @@ private:
         }
     };
 
+    struct Res_t {
+        QVector<double> ex;
+        QVector<double> x, y;
+    };
+
     //! Data for protons.
     Result_t protons;
 
     //! Coeff. for protons.
     QVector<double> cProtons;
+
+    //! More data
+    Res_t protons_res;
 
     //! Data for deutrons.
     Result_t deutrons;
@@ -90,11 +102,17 @@ private:
     //! Coeff. for deutrons.
     QVector<double> cDeutrons;
 
+    //! More data
+    Res_t deutrons_res;
+
     //! Data for tritons.
     Result_t tritons;
 
     //! Coeff. for tritons.
     QVector<double> cTritons;
+
+    //! More data
+    Res_t tritons_res;
 
     //! Data for Helium-3.
     Result_t He3s;
@@ -102,11 +120,26 @@ private:
     //! Coeff. for helium-3.
     QVector<double> cHe3s;
 
+    //! More data
+    Res_t He3s_res;
+
     //! Data for alphas.
     Result_t alphas;
 
     //! Coeff. for alphas.
     QVector<double> cAlphas;
+
+    //! More data
+    Res_t alphas_res;
+
+    //! Data for other.
+    Result_t others;
+
+    //! Coeff. for other.
+    QVector<double> cOthers;
+
+    //! More data
+    Res_t others_res;
 
     //! Function to set a strucure with values.
     inline void setResult(QVector<double> Ex,   /*!< Excitation energy.                                 */
@@ -128,6 +161,8 @@ private:
     /*! \return the html code for the table.
      */
     QString makeTable(Result_t what /*!< Strucure containing the data to write to table.    */);
+
+    QString makeCurve(Res_t data);
 
     //! Fuction to make a table from a result structure.
     /*! \return the txt string used for the table.

@@ -61,7 +61,8 @@ enum Fragment_t {
     Deutron,    //! Deutrons.
     Triton,     //! Tritons.
     Helium3,    //! Helium3s.
-    Alpha       //! Alphas.
+    Alpha,      //! Alphas.
+    Other       //! Other.
 };
 
 #endif // TYPES

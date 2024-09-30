@@ -39,18 +39,29 @@ public slots:
     //         const bool &h3,        /*!< Calculate for Helium-3 fragment.   */
     //         const bool &a          /*!< Calculate for alpha fragment.      */);
 
+    //void Run(const double &Angle,    /*!< Scattering angle.                  */
+    //         const double &incAngle, /*!< Incident angle on telescope.       */
+    //         const bool &p,          /*!< Calculate for proton fragment.     */
+    //         const bool &d,          /*!< Calculate for deutron fragment.    */
+    //         const bool &t,          /*!< Calculate for triton fragment.     */
+    //         const bool &h3,         /*!< Calculate for Helium-3 fragment.   */
+    //         const bool &a           /*!< Calculate for alpha fragment.      */);
+
     void Run(const double &Angle,    /*!< Scattering angle.                  */
              const double &incAngle, /*!< Incident angle on telescope.       */
              const bool &p,          /*!< Calculate for proton fragment.     */
              const bool &d,          /*!< Calculate for deutron fragment.    */
              const bool &t,          /*!< Calculate for triton fragment.     */
              const bool &h3,         /*!< Calculate for Helium-3 fragment.   */
-             const bool &a           /*!< Calculate for alpha fragment.      */);
+             const bool &a,          /*!< Calculate for alpha fragment.      */
+             const int &A,           /*!< Mass number of other fragment.     */
+             const int &Z            /*!< Proton number of other fragment.   */);
 
 signals:
 
     //! Emitting the result of calculations from \see Curve.
-    void ResultCurve(const QVector<double> &x,      /*!< The x-value result.    */
+    void ResultCurve(const QVector<double> &ex,     /*!< The excitation value.  */
+                     const QVector<double> &x,      /*!< The x-value result.    */
                      const QVector<double> &y,      /*!< The y-value result.    */
                      const QVector<double> &coeff,  /*!< Calculated fit.        */
                      const Fragment_t &what         /*!< For what fragment.     */);
