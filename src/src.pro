@@ -10,7 +10,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport webenginewidgets
 
 TARGET = kinzgui
 TEMPLATE = lib
-CONFIG += static
+CONFIG += static sdk_no_version_check
 
 
 DESTDIR = $$BUILDDIR/src
@@ -20,7 +20,7 @@ RCC_DIR = $$BUILDDIR/src/rcc
 UI_DIR = $$BUILDDIR/src/ui
 
 macx {
-    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.15
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 14
     QMAKE_CXXFLAGS += -std=c++20 -O3
     LIBS += -dead_strip
 }

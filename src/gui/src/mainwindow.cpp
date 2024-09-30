@@ -101,6 +101,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->BwdAngRButton, SIGNAL(toggled(bool)), this, SLOT(toggle_Angle(bool)));
     connect(ui->manAngle, SIGNAL(toggled(bool)), this, SLOT(toggle_Angle(bool)));
 
+    connect(ui->otherFrag, SIGNAL(toggled(bool)), this, SLOT(toggle_frag(bool)));
+    ui->otherA->setEnabled(false);
+    ui->otherZ->setEnabled(false);
+
     // Setting default values. Should be done from saved file?
     theBeam.A = 1;
     theBeam.Z = 1;
@@ -271,7 +275,7 @@ void MainWindow::Refresh()
 
 }
 
-void MainWindow::CurveData(const QVector<double> &x, const QVector<double> &y, const QVector<double> &coeff, const Fragment_t &what)
+void MainWindow::CurveData(const QVector<double> &ex, const QVector<double> &x, const QVector<double> &y, const QVector<double> &coeff, const Fragment_t &what)
 {
     QString legend = QString("%1(%2,").arg(ui->CurrentTarget->text()).arg(ui->CurrentBeam->text());
     if (what == Proton){
@@ -285,6 +289,7 @@ void MainWindow::CurveData(const QVector<double> &x, const QVector<double> &y, c
         }
         ui->plotTab->addPlottable(makeCurve(x, y, QPen(QColor(255,0,0)), legend));
         table.setCoeff(coeff, TableMakerHTML::Proton);
+        table.setCurve(ex, x, y, TableMakerHTML::Proton);
     } else if (what == Deutron){
         int Zres = theBeam.Z + theTarget.Z - 1;
         int Ares = theBeam.A + theTarget.A - 2;
@@ -296,6 +301,7 @@ void MainWindow::CurveData(const QVector<double> &x, const QVector<double> &y, c
         }
         ui->plotTab->addPlottable(makeCurve(x, y, QPen(QColor(0,255,0)), legend));
         table.setCoeff(coeff, TableMakerHTML::Deutron);
+        table.setCurve(ex, x, y, TableMakerHTML::Deutron);
     } else if (what == Triton){
         int Zres = theBeam.Z + theTarget.Z - 1;
         int Ares = theBeam.A + theTarget.A - 3;
@@ -307,6 +313,7 @@ void MainWindow::CurveData(const QVector<double> &x, const QVector<double> &y, c
         }
         ui->plotTab->addPlottable(makeCurve(x, y, QPen(QColor(128,128,128)), legend));
         table.setCoeff(coeff, TableMakerHTML::Triton);
+        table.setCurve(ex, x, y, TableMakerHTML::Triton);
     } else if (what == Helium3){
         int Zres = theBeam.Z + theTarget.Z - 2;
         int Ares = theBeam.A + theTarget.A - 3;
@@ -318,6 +325,7 @@ void MainWindow::CurveData(const QVector<double> &x, const QVector<double> &y, c
         }
         ui->plotTab->addPlottable(makeCurve(x, y, QPen(QColor(0,0,255)), legend));
         table.setCoeff(coeff, TableMakerHTML::Helium3);
+        table.setCurve(ex, x, y, TableMakerHTML::Helium3);
     } else if (what == Alpha){
         int Zres = theBeam.Z + theTarget.Z - 2;
         int Ares = theBeam.A + theTarget.A - 4;
@@ -329,6 +337,20 @@ void MainWindow::CurveData(const QVector<double> &x, const QVector<double> &y, c
         }
         ui->plotTab->addPlottable(makeCurve(x, y, QPen(QColor(0,0,0)), legend));
         table.setCoeff(coeff, TableMakerHTML::Alpha);
+        table.setCurve(ex, x, y, TableMakerHTML::Alpha);
+    } else if (what == Other){
+        int Zres = theBeam.Z + theTarget.Z - ui->otherZ->value();
+        int Ares = theBeam.A + theTarget.A - ui->otherA->value();
+        QString outP = std::string(std::to_string(Ares) + get_element_name(Zres)).c_str();
+        QString inP = std::string(std::to_string(ui->otherA->value()) + get_element_name(ui->otherZ->value())).c_str();
+        if ( theBeam.A == ui->otherA->value() && theBeam.Z == ui->otherZ->value() ){
+            legend = QString("%1%2)%3").arg(legend).arg(inP+"'").arg(outP);
+        } else {
+            legend = QString("%1%2)%3").arg(legend).arg(inP).arg(outP);
+        }
+        ui->plotTab->addPlottable(makeCurve(x, y, QPen(QColor(128, 128, 0)), legend));
+        table.setCoeff(coeff, TableMakerHTML::Other);
+        table.setCurve(ex, x, y, TableMakerHTML::Other);
     }
 
     ui->plotTab->replot();
@@ -359,6 +381,10 @@ void MainWindow::ScatterData(const QVector<double> &x, const QVector<double> &dx
         ui->plotTab->addPlottable(makeGraph(x, dx, y, dy, QPen(QColor(0,0,0))));
         ui->plotTab->plottable()->removeFromLegend();
         table.setData(ex, y, dy, x, dx, TableMakerHTML::Alpha);
+    } else if (what == Other){
+        ui->plotTab->addPlottable(makeGraph(x, dx, y, dy, QPen(QColor(128, 128, 0))));
+        ui->plotTab->plottable()->removeFromLegend();
+        table.setData(ex, y, dy, x, dx, TableMakerHTML::Other);
     }
     ui->plotTab->replot();
     ui->plotTab->rescaleAxes();
@@ -379,14 +405,19 @@ void MainWindow::run()
         angle = ui->manAngleInput->value()*PI/180.;
         incAngle = ui->incAngleInput->value()*PI/180.;
     } else {
-        incAngle = (2*ui->StripNumbr->value() - 7)*PI/180;
-        angle = 47.0*PI/180 + incAngle;
+        incAngle = (2*ui->StripNumbr->value() - 7)*PI/180.;
+        angle = 47.0*PI/180. + incAngle;
         if (ui->BwdAngRButton->isChecked()){
             angle = PI - angle;
         }
     }
-
-    emit operate(angle, incAngle, ui->protons->isChecked(), ui->deutrons->isChecked(), ui->tritons->isChecked(), ui->He3s->isChecked(), ui->alphas->isChecked());
+    int A = -1;
+    int Z = -1;
+    if ( ui->otherFrag->isChecked() ){
+        A = ui->otherA->value();
+        Z = ui->otherZ->value();
+    }
+    emit operate(angle, incAngle, ui->protons->isChecked(), ui->deutrons->isChecked(), ui->tritons->isChecked(), ui->He3s->isChecked(), ui->alphas->isChecked(), A, Z);
 }
 
 void MainWindow::WorkFinished()
@@ -577,9 +608,10 @@ void MainWindow::on_actionAbout_QCustomPlot_triggered()
 void MainWindow::strip_changed(int)
 {
     double incAngle = 2*ui->StripNumbr->value() - 7;
-    double angle = 47.0 - incAngle;
-    if ( ui->BwdAngRButton->isChecked() )
+    double angle = 47.0 + incAngle;
+    if ( ui->BwdAngRButton->isChecked() ){
         angle = 180. - angle;
+    }
     ui->manAngleInput->setValue(angle);
     ui->incAngleInput->setValue(fabs(incAngle));
 }
@@ -599,6 +631,17 @@ void MainWindow::toggle_Angle(bool)
         strip_changed(0);
     }
 
+}
+
+void MainWindow::toggle_frag(bool)
+{
+    if ( ui->otherFrag->isChecked() ){
+        ui->otherA->setEnabled(true);
+        ui->otherZ->setEnabled(true);
+    } else {
+        ui->otherA->setEnabled(false);
+        ui->otherZ->setEnabled(false);
+    }
 }
 
 // This is an early implementation.

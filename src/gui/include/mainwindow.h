@@ -37,13 +37,14 @@ public:
 
 signals:
     //void operate(const double &Angle, const bool &p, const bool &d, const bool &t, const bool &h3, const bool &a);
-    void operate(const double &Angle, const double &incAngle, const bool &p, const bool &d, const bool &t, const bool &h3, const bool &a);
+    void operate(const double &Angle, const double &incAngle, const bool &p, const bool &d, const bool &t, const bool &h3, const bool &a, const int &A, const int &Z);
     void runBatchFile(QString batchfile);
 
 public slots:
     //! Slot for reciving curve data from the worker. It will plot the data for the
     //! recived data.
-    void CurveData(const QVector<double> &x,       /*!< x-values.                                                      */
+    void CurveData(const QVector<double> &ex,      /*!< Excitation energy.                                             */
+                   const QVector<double> &x,       /*!< x-values.                                                      */
                    const QVector<double> &y,       /*!< y-values.                                                      */
                    const QVector<double> &coeff,   /*!< Coefficients for the fit Ex(x+y) = a0 + a1(x+y) + a2(x+y)^2    */
                    const Fragment_t &what          /*!< What fragment.                                                 */);
@@ -141,6 +142,9 @@ private slots:
 
     //! Angle ratio button is toggled.
     void toggle_Angle(bool);
+
+    //! Toggle the 'Other' option.
+    void toggle_frag(bool);
 
 private:
     //! The ui of the window.

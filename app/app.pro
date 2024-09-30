@@ -12,11 +12,11 @@ OBJECTS_DIR = $$BUILDDIR/app
 MOC_DIR = $$BUILDDIR/app
 RCC_DIR = $$BUILDDIR/app
 UI_DIR = $$BUILDDIR/app
-
+CONFIG += sdk_no_version_check
 macx {
-    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.15
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 14
     QMAKE_CXXFLAGS += -std=c++20 -O3
-    LIBS += -dead_strip  #-stdlib=libc++
+    LIBS += -dead_strip
     ICON = ../resources/media/Qkinz.icns
 }
 

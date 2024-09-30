@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
-    <height>911</height>
+    <width>1034</width>
+    <height>1000</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -539,6 +539,61 @@
                 </widget>
                </item>
                <item>
+                <widget class="QCheckBox" name="otherFrag">
+                 <property name="text">
+                  <string>Other</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="LayoutFragOtherA">
+                 <item>
+                  <widget class="QLabel" name="OtherALabel">
+                   <property name="text">
+                    <string>A:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="otherA">
+                   <property name="minimum">
+                    <number>0</number>
+                   </property>
+                   <property name="maximum">
+                    <number>999</number>
+                   </property>
+                   <property name="value">
+                    <number>12</number>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+                </item>
+                <item>
+                <layout class="QHBoxLayout" name="LayoutFragOtherZ">
+                 <item>
+                  <widget class="QLabel" name="OtherZLabel">
+                   <property name="text">
+                    <string>Z:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="otherZ">
+                   <property name="minimum">
+                    <number>0</number>
+                   </property>
+                   <property name="maximum">
+                    <number>999</number>
+                   </property>
+                   <property name="value">
+                    <number>6</number>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+                </item>
+               <item>
                 <spacer name="verticalSpacer_3">
                  <property name="orientation">
                   <enum>Qt::Vertical</enum>
@@ -673,8 +728,8 @@
          </attribute>
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="0" column="0">
-           <widget class="QWebEngineView" name="webView" native="true">
-            <property name="url" stdset="0">
+           <widget class="QWebEngineView" name="webView">
+            <property name="url">
              <url>
               <string>about:blank</string>
              </url>
@@ -694,8 +749,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1024</width>
-     <height>22</height>
+     <width>1034</width>
+     <height>37</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -805,15 +860,15 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
+   <class>QWebEngineView</class>
+   <extends>QWidget</extends>
+   <header location="global">QtWebEngineWidgets/QWebEngineView</header>
+  </customwidget>
+  <customwidget>
    <class>QCustomPlot</class>
    <extends>QWidget</extends>
    <header>qcustomplot.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>QWebEngineView</class>
-   <extends>QWidget</extends>
-   <header>qwebengineview.h</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -4,9 +4,6 @@
 #include "Material.h"
 #include "global.h"
 
-#include "Scattering.h"
-#include "DickNorbury.h"
-#include "Iterative.h"
 #include "RelScatter.h"
 
 #include "StoppingPower.h"
@@ -85,80 +82,7 @@ bool Worker::getCoeff(const double &angle, const int &fragA, const int &fragZ, Q
     return Curve(ex, de, e, coeff, angle, fragA, fragZ);
 }
 
-/*void Worker::Run(const double &Angle, const bool &p, const bool &d, const bool &t, const bool &h3, const bool &a)
-{
-    QVector<double> ex, de, d_de, e, d_e, coeff;
-    int ntot = 0, nres=0;
-    if (p) ntot += 2;
-    if (d) ntot += 2;
-    if (t) ntot += 2;
-    if (h3) ntot += 2;
-    if (a) ntot += 2;
-
-    if (p){
-        if (Curve(ex, de, e, coeff, Angle, 1, 1)){
-            emit ResultCurve(e, de, coeff, Proton);
-            ++nres;
-            emit curr_prog(100*double(nres)/double(ntot));
-        }
-        if (Known(ex, de, e, d_de, d_e, Angle, 1, 1)){
-            emit ResultScatter(e, d_e, de, d_de, ex, Proton);
-            ++nres;
-            emit curr_prog(100*double(nres)/double(ntot));
-        }
-    }
-    if (d){
-        if (Curve(ex, de, e, coeff, Angle, 2, 1)){
-            emit ResultCurve(e, de, coeff, Deutron);
-            ++nres;
-            emit curr_prog(100*double(nres)/double(ntot));
-        }
-        if (Known(ex, de, e, d_de, d_e, Angle, 2, 1)){
-            emit ResultScatter(e, d_e, de, d_de, ex, Deutron);
-            ++nres;
-            emit curr_prog(100*double(nres)/double(ntot));
-        }
-    }
-    if (t){
-        if (Curve(ex, de, e, coeff, Angle, 3, 1)){
-            emit ResultCurve(e, de, coeff, Triton);
-            ++nres;
-            emit curr_prog(100*double(nres)/double(ntot));
-        }
-        if (Known(ex, de, e, d_de, d_e, Angle, 3, 1)){
-            emit ResultScatter(e, d_e, de, d_de, ex, Triton);
-            ++nres;
-            emit curr_prog(100*double(nres)/double(ntot));
-        }
-    }
-    if (h3){
-        if (Curve(ex, de, e, coeff, Angle, 3, 2)){
-            emit ResultCurve(e, de, coeff, Helium3);
-            ++nres;
-            emit curr_prog(100*double(nres)/double(ntot));
-        }
-        if (Known(ex, de, e, d_de, d_e, Angle, 3, 2)){
-            emit ResultScatter(e, d_e, de, d_de, ex, Helium3);
-            ++nres;
-            emit curr_prog(100*double(nres)/double(ntot));
-        }
-    }
-    if (a){
-        if (Curve(ex, de, e, coeff, Angle, 4, 2)){
-            emit ResultCurve(e, de, coeff, Alpha);
-            ++nres;
-            emit curr_prog(100*double(nres)/double(ntot));
-        }
-        if (Known(ex, de, e, d_de, d_e, Angle, 4, 2)){
-            emit ResultScatter(e, d_e, de, d_de, ex, Alpha);
-            ++nres;
-            emit curr_prog(100*double(nres)/double(ntot));
-        }
-    }
-    emit FinishedAll();
-}*/
-
-void Worker::Run(const double &Angle, const double &incAngle, const bool &p, const bool &d, const bool &t, const bool &h3, const bool &a)
+/*void Worker::Run(const double &Angle, const double &incAngle, const bool &p, const bool &d, const bool &t, const bool &h3, const bool &a)
 {
     QVector<double> ex, de, d_de, e, d_e, coeff;
     int ntot = 0, nres=0;
@@ -229,7 +153,95 @@ void Worker::Run(const double &Angle, const double &incAngle, const bool &p, con
         }
     }
     emit FinishedAll();
+}*/
+
+void Worker::Run(const double &Angle, const double &incAngle, const bool &p, const bool &d, const bool &t, const bool &h3, const bool &a, const int &A, const int &Z)
+{
+    QVector<double> ex, de, d_de, e, d_e, coeff;
+    int ntot = 0, nres=0;
+    if (p) ntot += 2;
+    if (d) ntot += 2;
+    if (t) ntot += 2;
+    if (h3) ntot += 2;
+    if (a) ntot += 2;
+    if ( A>0&&Z>0 ) ntot += 2;
+
+    if (p){
+        if (Curve(ex, de, e, coeff, Angle, incAngle, 1, 1)){
+            emit ResultCurve(ex, e, de, coeff, Proton);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
+        }
+        if (Known(ex, de, e, d_de, d_e, Angle, incAngle, 1, 1)){
+            emit ResultScatter(e, d_e, de, d_de, ex, Proton);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
+        }
+    }
+    if (d){
+        if (Curve(ex, de, e, coeff, Angle, incAngle, 2, 1)){
+            emit ResultCurve(ex, e, de, coeff, Deutron);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
+        }
+        if (Known(ex, de, e, d_de, d_e, Angle, incAngle, 2, 1)){
+            emit ResultScatter(e, d_e, de, d_de, ex, Deutron);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
+        }
+    }
+    if (t){
+        if (Curve(ex, de, e, coeff, Angle, incAngle, 3, 1)){
+            emit ResultCurve(ex, e, de, coeff, Triton);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
+        }
+        if (Known(ex, de, e, d_de, d_e, Angle, incAngle, 3, 1)){
+            emit ResultScatter(e, d_e, de, d_de, ex, Triton);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
+        }
+    }
+    if (h3){
+        if (Curve(ex, de, e, coeff, Angle, incAngle, 3, 2)){
+            emit ResultCurve(ex, e, de, coeff, Helium3);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
+        }
+        if (Known(ex, de, e, d_de, d_e, Angle, incAngle, 3, 2)){
+            emit ResultScatter(e, d_e, de, d_de, ex, Helium3);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
+        }
+    }
+    if (a){
+        if (Curve(ex, de, e, coeff, Angle, incAngle, 4, 2)){
+            emit ResultCurve(ex, e, de, coeff, Alpha);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
+        }
+        if (Known(ex, de, e, d_de, d_e, Angle, incAngle, 4, 2)){
+            emit ResultScatter(e, d_e, de, d_de, ex, Alpha);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
+        }
+    }
+    if ( A > 0 && Z > 0 ){
+        if (Curve(ex, de, e, coeff, Angle, incAngle, A, Z)){
+            emit ResultCurve(ex, e, de, coeff, Other);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
+        }
+        if (Known(ex, de, e, d_de, d_e, Angle, incAngle, A, Z)){
+            emit ResultScatter(e, d_e, de, d_de, ex, Other);
+            ++nres;
+            emit curr_prog(100*double(nres)/double(ntot));
+        }
+    }
+
+    emit FinishedAll();
 }
+
 
 bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E, QVector<double> &coeff, const double &Angle, const int &fA, const int &fZ)
 {
@@ -286,7 +298,7 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
             fUnit = Material::um;
         }
         StoppingPower *stopBack;
-        Material::Unit bUnit;
+        Material::Unit bUnit = Material::Unit::gcm2;
         if (theBack->Z > 92){
             stopBack = new BetheBlock(back, fragment);
             bUnit = Material::gcm2;
@@ -584,7 +596,7 @@ bool Worker::Curve(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
             fUnit = Material::um;
         }
         StoppingPower *stopBack;
-        Material::Unit bUnit;
+        Material::Unit bUnit = Material::Unit::gcm2;
         if (theBack->Z > 92){
             stopBack = new BetheBlock(back, fragment);
             bUnit = Material::gcm2;
@@ -883,7 +895,7 @@ bool Worker::Known(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         fUnit = Material::um;
     }
     StoppingPower *stopBack;
-    Material::Unit bUnit;
+    Material::Unit bUnit  = Material::Unit::gcm2;
     if (theBack->Z > 92){
         stopBack = new BetheBlock(back, fragment);
         bUnit = Material::gcm2;
@@ -1182,7 +1194,7 @@ bool Worker::Known(QVector<double> &Ex, QVector<double> &dE, QVector<double> &E,
         fUnit = Material::um;
     }
     StoppingPower *stopBack;
-    Material::Unit bUnit;
+    Material::Unit bUnit  = Material::Unit::gcm2;
     if (theBack->Z > 92){
         stopBack = new BetheBlock(back, fragment);
         bUnit = Material::gcm2;
