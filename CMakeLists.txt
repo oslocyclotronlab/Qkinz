@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(Qkinz VERSION 1.4.0 LANGUAGES C CXX)
+project(Qkinz VERSION 1.4.1 LANGUAGES C CXX)
 
 list(APPEND CMAKE_PREFIX_PATH "/opt/homebrew/opt/qt@5")
 
