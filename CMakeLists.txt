@@ -99,7 +99,7 @@ set(sources
 
 qt5_add_resources(sources resources/resorces.qrc)
 
-add_executable(${PROJECT_NAME} ${headers} ${sources})
+add_executable(${PROJECT_NAME} ${sources})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 20)
 
