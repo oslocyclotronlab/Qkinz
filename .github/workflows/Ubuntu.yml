@@ -27,10 +27,7 @@ jobs:
           key: ${{ github.workflow }}-cpm-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v4
-        with:
-          version: '5.15.2'
-          modules: 'qtwebengine qtwebenginewidget'
+        run: sudo apt install -y qtcreator qtbase5-dev qt5-qmake cmake
 
       - name: configure
         run: cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release
