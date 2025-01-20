@@ -49,7 +49,7 @@ set(headers
     ${CMAKE_CURRENT_SOURCE_DIR}/src/matter/include/Material.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/matter/include/Particle.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/support/include/BatchReader.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/support/include/Runsystem.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/support/include/runsystem.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/support/include/tablemakerhtml.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/support/include/worker.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/tables/include/ame2012_mass_tables.h
