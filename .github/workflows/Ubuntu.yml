@@ -27,7 +27,7 @@ jobs:
           key: ${{ github.workflow }}-cpm-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
 
       - name: Install Qt
-        run: sudo apt install -y qtbase5-dev qt5-qmake cmake libqt5webengine5 libqt5webenginecore5 libqt5webenginewidgets5
+        run: sudo apt install -y qtbase5-dev qt5-qmake cmake libqt5webengine5-dev libqt5webenginecore5-dev libqt5webenginewidgets5-dev
 
       - name: configure
         run: cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release
