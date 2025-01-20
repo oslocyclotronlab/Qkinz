@@ -87,7 +87,7 @@ set(sources
     ${CMAKE_CURRENT_SOURCE_DIR}/src/matter/src/Material.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/matter/src/Particle.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/support/src/BatchReader.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/support/src/Runsystem.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/support/src/runsystem.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/support/src/tablemakerhtml.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/support/src/worker.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/tables/src/ame2012_mass_tables.cpp
@@ -99,7 +99,7 @@ set(sources
 
 qt5_add_resources(sources resources/resorces.qrc)
 
-add_executable(${PROJECT_NAME} ${sources})
+add_executable(${PROJECT_NAME} ${headers} ${sources})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 20)
 
