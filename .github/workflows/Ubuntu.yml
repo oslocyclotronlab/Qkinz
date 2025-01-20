@@ -21,13 +21,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v4
         with:
           path: "**/cpm_modules"
           key: ${{ github.workflow }}-cpm-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
 
       - name: Install Qt
-        run: sudo apt install -y qtbase5-dev qt5-qmake cmake libqt5webengine5-dev libqt5webenginecore5-dev libqt5webenginewidgets5-dev
+        run: sudo apt install -y qtbase5-dev qt5-qmake cmake qtwebengine5-dev libqt5webengine5 libqt5webenginecore5 libqt5webenginewidgets5
 
       - name: configure
         run: cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release
